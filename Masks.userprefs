@@ -4,7 +4,7 @@
     <Files>
       <File FileName="Assets\Scripts\Individual.cs" Line="78" Column="30" />
       <File FileName="Assets\Scripts\GameManager.cs" Line="59" Column="1" />
-      <File FileName="Assets\Scripts\Mask.cs" Line="71" Column="24" />
+      <File FileName="Assets\Scripts\Mask.cs" Line="65" Column="34" />
       <File FileName="Assets\Scripts\MainPlayer.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

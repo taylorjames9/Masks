@@ -12,6 +12,21 @@ public class GameManager : MonoBehaviour {
   public int RandGroupNumInGame {get{ return _randGroupNumInGame; } set{ _randGroupNumInGame = value; }}
   public int RandMaskNumInGame { get { return _randMaskNumInGame; } set { _randMaskNumInGame = value; }}
 
+  public static GameManager instance { get ; set;}
+
+  void Awake(){
+    instance = this;
+  }
+
+  void OnEnable(){
+    Individual.OnMaskRemoval += OneLessMaskInGame;
+  }
+
+  void OnDisable(){
+    Individual.OnMaskRemoval -= OneLessMaskInGame;
+
+  }
+
 
   // Use this for initialization
   void Start () {
@@ -22,6 +37,7 @@ public class GameManager : MonoBehaviour {
     CreateGroupOfPlayers ();
     PlotGroupInCircle (RandGroupNumInGame, 4.0f, new Vector2 (0, 0));
     DistributeMasksToGroup ();
+    //UI_Manager.instance.UpdateMaskNumberGUI ();
 
   }
   
@@ -46,6 +62,7 @@ public class GameManager : MonoBehaviour {
       int newX = (int)(center.x + radius * Mathf.Cos (angle));
       int newY = (int)(center.y + radius * Mathf.Sin (angle));
       Vector2 p = new Vector2 (newX, newY);
+      Debug.Log ("point p "+p.ToString());
       indie.transform.position = p;
     }
   }
@@ -62,16 +79,17 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 		}
-    Debug.Log ("out of WHILE code");
+    //Debug.Log ("out of WHILE code");
     foreach (Individual ind in groupOfPlayersList) {
       ind.DisplayOnlyTopMask ();
     }
 	}
-	
-	
-	
-	
-	
+
+  public void OneLessMaskInGame(){
+    RandMaskNumInGame--;
+
+  }
+
 	// Update is called once per frame
 	void Update () {
 	

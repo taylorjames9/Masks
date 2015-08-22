@@ -62,6 +62,7 @@ public class Mask : MonoBehaviour {
   }
 
   public void MaskFlyOff(){
+    Debug.Log ("MASK FLIES OFF");
     MyOwner.RemoveMask ();
     maskAnim.enabled = true;
     float _currY = GetComponent<RectTransform>().localPosition.y;
@@ -78,8 +79,6 @@ public class Mask : MonoBehaviour {
   public void DestroyMask(){
     Destroy (this.gameObject);
   }
-
-
 
   // Use this for initialization
   void OnEnable () {

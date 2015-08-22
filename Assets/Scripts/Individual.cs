@@ -28,24 +28,30 @@ public class Individual : MonoBehaviour {
 	public Vector2 MyPositionInRoom{get { return _myPositionInRoom; } set {_myPositionInRoom = value;}}
 	public PlayerState MyPlayerState{get{ return _myState; } set{ _myState = value;}}
 
+  public delegate void MaskAction();
+  public static event MaskAction OnMaskRemoval;
+
 	// Use this for initialization
 	void Start () {
 
 	}
 
-
-
   public void DisplayOnlyTopMask(){
-    if(myMaskList.Count < 1)
+    if (myMaskList.Count < 1) {
+      myMaskImage.sprite = skull;
+      GetComponent<Image>().color = new Color(GetComponent<Image>().color.r,GetComponent<Image>().color.g,GetComponent<Image>().color.b, 1.0f);
       return;
-    myMaskList [myMaskList.Count - 1].ChangeAlphaColor (1.0f);
+    }else {
+      myMaskList [myMaskList.Count - 1].ChangeAlphaColor (1.0f);
+
+    }
   }
 
   public Mask CheckTopMask(){
     if (myMaskList.Count > 0) {
       return myMaskList [myMaskList.Count - 1];
     } else {
-      //myMaskImage.sprite = skull;
+      myMaskImage.sprite = skull;
       return null;
     }
   }
@@ -83,6 +89,7 @@ public class Individual : MonoBehaviour {
     myMaskList.RemoveAt (myMaskList.Count - 1);
     CheckIfMaskIsTrueCharacter ();
     CheckIfDead ();
+    OnMaskRemoval ();
   }
 
 	// Update is called once per frame
