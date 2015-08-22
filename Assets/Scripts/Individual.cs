@@ -17,7 +17,7 @@ public class Individual : MonoBehaviour {
 	public List<Mask> myMaskList; 
 	private Vector2 _myPositionInRoom;
 	public GameObject MaskPrototype;
-
+  
 	public enum PlayerState{None, Idle, MyTurn, AtTrueChar, ImBone, Dead};
 	private PlayerState _myState;
 
@@ -30,12 +30,15 @@ public class Individual : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//DisplayTopMask ();
-		MyPositionInRoom = new Vector2 (0, 0);
+
 	}
 
-  public void DisplayTopMask(){
-    myMaskImage.sprite = CheckTopMask ().DisplayMaskImage;
+
+
+  public void DisplayOnlyTopMask(){
+    if(myMaskList.Count < 1)
+      return;
+    myMaskList [myMaskList.Count - 1].ChangeAlphaColor (1.0f);
   }
 
   public Mask CheckTopMask(){
@@ -65,12 +68,14 @@ public class Individual : MonoBehaviour {
  	}
 
 	public MaskType ApplyRandomMask(){
-	  GameObject myNewMaskObj = Instantiate(MaskPrototype, _myPositionInRoom, Quaternion.identity) as GameObject;
-	  //Debug.Log ("my new mask object " + myNewMaskObj.name);
-	  //Mask myNewMask = null;
-      Mask myNewMask = myNewMaskObj.GetComponent<Mask>();
+    GameObject myNewMaskObj = Instantiate (MaskPrototype, _myPositionInRoom, Quaternion.identity) as GameObject;
+    Mask myNewMask = myNewMaskObj.GetComponent<Mask>();
 	  myNewMask.InitializeRandomMask();
 	  myMaskList.Add(myNewMask);
+    myNewMask.transform.SetParent (transform);
+    myNewMask.transform.position = new Vector2 (transform.position.x, transform.position.y);
+    myNewMask.ChangeAlphaColor (0);
+    myNewMask.MyOwner = this;
     return myNewMask.MyMaskType;
 	}
 
@@ -80,9 +85,6 @@ public class Individual : MonoBehaviour {
     CheckIfDead ();
   }
 
-
-
-	
 	// Update is called once per frame
 	void Update () {
 	

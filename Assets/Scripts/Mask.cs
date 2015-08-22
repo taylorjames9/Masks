@@ -8,8 +8,11 @@ public enum MaskState{None, Alive, Shattered};
 public enum MaskType{None, Attack, Defend, Switch};
 
 public class Mask : MonoBehaviour {
-
+  public Animator maskAnim;
   public  List<Sprite> myPossibleMaskImages;
+
+  private Individual _myOwner; 
+  public Individual MyOwner{get { return _myOwner; } set{ _myOwner = value;}}
 
   private Sprite _displayMaskImage;
   public Sprite DisplayMaskImage{get{return _displayMaskImage;} set { _displayMaskImage = value;}}
@@ -22,7 +25,8 @@ public class Mask : MonoBehaviour {
   
   public void InitializeRandomMask(){
     MyMaskState = MaskState.Alive;
-    MyMaskType = (MaskType) Random.Range (1, 3);
+    MyMaskType = (MaskType) Random.Range (1, 4);
+    Debug.Log ("random range for mask " + MyMaskType);
 
     switch (MyMaskType) {
     case MaskType.Attack: 
@@ -41,6 +45,9 @@ public class Mask : MonoBehaviour {
       Debug.Log ("No mask type");
       break;
     }
+
+    GetComponent<Image>().sprite = DisplayMaskImage;
+
   }
 
   public void InitializeSpecificMask(MaskState _ms, MaskType _mt){
@@ -49,9 +56,38 @@ public class Mask : MonoBehaviour {
 
   }
 
+  public float ChangeAlphaColor(float _a){
+    GetComponent<Image> ().color = new Color (GetComponent<Image> ().color.r, GetComponent<Image> ().color.g, GetComponent<Image> ().color.b, _a);
+    return _a;
+  }
+
+  public void MaskFlyOff(){
+    MyOwner.RemoveMask ();
+    maskAnim.enabled = true;
+    float _currY = GetComponent<RectTransform>().localPosition.y;
+    float _offScreenPos = 20.0f;
+    float delta_y = 0;
+    while(_currY < _offScreenPos){
+      _currY += 0.001f;
+      GetComponent<RectTransform>().localPosition = new Vector2(GetComponent<RectTransform>().localPosition.x, _currY);
+    }
+    Invoke ("DestroyMask", 2.0f);
+    MyOwner.DisplayOnlyTopMask ();
+  }
+
+  public void DestroyMask(){
+    Destroy (this.gameObject);
+  }
+
+
+
   // Use this for initialization
-  void Start () {
-	InitializeRandomMask ();
+  void OnEnable () {
+	  //InitializeRandomMask ();
+  }
+
+  void Start(){
+
   }
   
   // Update is called once per frame

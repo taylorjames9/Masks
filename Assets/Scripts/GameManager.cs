@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
     RandMaskNumInGame = Random.Range (RandGroupNumInGame, RandGroupNumInGame * 4);
 		Debug.Log ("RandMask num = "+RandMaskNumInGame);
     CreateGroupOfPlayers ();
-    PlotGroupInCircle (RandGroupNumInGame, 2.0f, new Vector2 (0, 0));
+    PlotGroupInCircle (RandGroupNumInGame, 4.0f, new Vector2 (0, 0));
     DistributeMasksToGroup ();
 
   }
@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour {
       Individual recentlyManufacturedIndie = myIndieObj.GetComponent<Individual>();
       recentlyManufacturedIndie.Index = i;
       groupOfPlayersList.Add(recentlyManufacturedIndie);
+      myIndieObj.transform.SetParent(GameObject.FindGameObjectWithTag("GameController").transform);
     }
     return groupOfPlayersList;
   }
@@ -38,14 +39,13 @@ public class GameManager : MonoBehaviour {
   private void PlotGroupInCircle(int _numInGame, double radius, Vector2 center)
   {
     int i = 0;
-    float slice = 2 * Mathf.PI / _numInGame;
+    float slice = 2 * Mathf.PI / _numInGame +1;
     foreach (Individual indie in groupOfPlayersList) {
       i++;
       float angle = slice * i;
       int newX = (int)(center.x + radius * Mathf.Cos (angle));
       int newY = (int)(center.y + radius * Mathf.Sin (angle));
       Vector2 p = new Vector2 (newX, newY);
-      Debug.Log ( "new point "+p);
       indie.transform.position = p;
     }
   }
@@ -62,8 +62,9 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 		}
-    foreach (Individual indie in groupOfPlayersList) {
-      indie.DisplayTopMask();
+    Debug.Log ("out of WHILE code");
+    foreach (Individual ind in groupOfPlayersList) {
+      ind.DisplayOnlyTopMask ();
     }
 	}
 	
