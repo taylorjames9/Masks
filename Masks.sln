@@ -1,7 +1,7 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{926F0E75-CB62-05CE-B7AF-C09F024492EC}") = "Masks", "Assembly-CSharp.csproj", "{DAC65FE2-6BA6-286F-60B2-2C1CDB29C47B}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{DAC65FE2-6BA6-286F-60B2-2C1CDB29C47B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,16 +14,14 @@ Global
 		{DAC65FE2-6BA6-286F-60B2-2C1CDB29C47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAC65FE2-6BA6-286F-60B2-2C1CDB29C47B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-										GlobalSection(MonoDevelopProperties) = preSolution
+	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120
 		$1.TabWidth = 2
 		$1.IndentWidth = 2
+		$1.NoTabsAfterNonTabs = True
 		$1.inheritsSet = VisualStudio
 		$1.inheritsScope = text/plain
 		$1.scope = text/x-csharp
@@ -34,5 +32,7 @@ Global
 		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
 	EndGlobalSection
-
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 EndGlobal

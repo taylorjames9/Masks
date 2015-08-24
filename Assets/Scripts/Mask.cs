@@ -26,23 +26,23 @@ public class Mask : MonoBehaviour {
   public void InitializeRandomMask(){
     MyMaskState = MaskState.Alive;
     MyMaskType = (MaskType) Random.Range (1, 4);
-    Debug.Log ("random range for mask " + MyMaskType);
+    //Debug.Log ("random range for mask " + MyMaskType);
 
     switch (MyMaskType) {
     case MaskType.Attack: 
       DisplayMaskImage = myPossibleMaskImages[0];
-      Debug.Log ("Mask type set to : "+MyMaskType.ToString());
+      //Debug.Log ("Mask type set to : "+MyMaskType.ToString());
       break;
     case MaskType.Defend: 
       DisplayMaskImage = myPossibleMaskImages[1];
-      Debug.Log ("Mask type set to : "+MyMaskType.ToString());
+      //Debug.Log ("Mask type set to : "+MyMaskType.ToString());
       break;
     case MaskType.Switch: 
       DisplayMaskImage = myPossibleMaskImages[2];
-      Debug.Log ("Mask type set to : "+MyMaskType.ToString());
+      //Debug.Log ("Mask type set to : "+MyMaskType.ToString());
       break;
     default:
-      Debug.Log ("No mask type");
+      //Debug.Log ("No mask type");
       break;
     }
 

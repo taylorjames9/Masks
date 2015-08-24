@@ -18,7 +18,7 @@ public class Individual : MonoBehaviour {
 	private Vector2 _myPositionInRoom;
 	public GameObject MaskPrototype;
   
-	public enum PlayerState{None, Idle, MyTurn, AtTrueChar, ImBone, Dead};
+	public enum PlayerState{None, AtTrueChar, Dead, Bone, Alive};
 	private PlayerState _myState;
 
 	public int Index{ get { return _index; } set { _index = value; } }
@@ -30,6 +30,23 @@ public class Individual : MonoBehaviour {
 
   public delegate void MaskAction();
   public static event MaskAction OnMaskRemoval;
+
+	public delegate void TurnCompleteAction();
+	public static event TurnCompleteAction OnTurnComplete;
+
+	void OnEnable(){
+		//subscribe to GameManager OnTurnChange event
+		GameManager.OnTurnChange += OnMyTurn;
+
+	}
+
+	void OnDisable(){
+		//unsubscribe
+		GameManager.OnTurnChange -= OnMyTurn;
+
+	}
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -56,22 +73,20 @@ public class Individual : MonoBehaviour {
     }
   }
 
-	public void MarkAsDead(){
-		_myState = PlayerState.Dead;
-	}
-
-	public bool CheckIfDead(){
-		return _myState == PlayerState.Dead;
-	}
-
-	public bool CheckIfMaskIsTrueCharacter(){
-    if (myMaskList.Count == 1) {
+	public PlayerState CheckPlayerState(){
+    switch (myMaskList.Count) {
+    case 0:
+      MyPlayerState = PlayerState.Dead;
+      break;
+    case 1:
       MyPlayerState = PlayerState.AtTrueChar;
-      return true;
-    } else {
-      return false;
+      break;
+    default:
+      MyPlayerState = PlayerState.Alive;
+      break;
     }
- 	}
+    return MyPlayerState;
+	}
 
 	public MaskType ApplyRandomMask(){
     GameObject myNewMaskObj = Instantiate (MaskPrototype, _myPositionInRoom, Quaternion.identity) as GameObject;
@@ -87,8 +102,7 @@ public class Individual : MonoBehaviour {
 
   public void RemoveMask(){
     myMaskList.RemoveAt (myMaskList.Count - 1);
-    CheckIfMaskIsTrueCharacter ();
-    CheckIfDead ();
+    CheckPlayerState ();
     OnMaskRemoval ();
   }
 
@@ -96,4 +110,30 @@ public class Individual : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	public virtual void OnMyTurn(int turnPos){
+    if (turnPos == Index) {
+      Debug.Log ("Individual OnMyTurn is running. My index is : "+Index);
+      if(MyPlayerState == PlayerState.Dead){
+        OnTurnComplete();
+      } else {
+        
+        //if Individual state is dead, skip turn
+        //Decide to go or not go (1/3 chance of pass)
+        //Choose a random mask from masks in possession
+        //if it is not a defense, choose a person (still in game) to apply it to
+        //do animation of action
+        //other person does reaction and updates their status
+        ////////OnTurnComplete ();
+      }
+
+
+    }
+    //yield return null;
+	}
+  
+  
+
+
+
 }
