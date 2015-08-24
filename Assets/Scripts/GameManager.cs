@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour {
 
 
   public GameObject _proto_individual;
+  public GameObject mainPlayer;
   public List<Individual> groupOfPlayersList;
   private int _randGroupNumInGame;
   private int _randMaskNumInGame;
@@ -47,16 +48,19 @@ public class GameManager : MonoBehaviour {
   }
   
   public List<Individual> CreateGroupOfPlayers(){
-    for (int i=0; i<=RandGroupNumInGame; i++) {
+    for (int i=1; i<=RandGroupNumInGame; i++) {
       GameObject myIndieObj = Instantiate(_proto_individual, new Vector2 (50, 50), Quaternion.identity) as GameObject;
       Individual recentlyManufacturedIndie = myIndieObj.GetComponent<Individual>();
       recentlyManufacturedIndie.Index = i;
-      if(recentlyManufacturedIndie.Index == 0){
-        myIndieObj.AddComponent<MainPlayer>();
-      }
       groupOfPlayersList.Add(recentlyManufacturedIndie);
       myIndieObj.transform.SetParent(GameObject.FindGameObjectWithTag("GameController").transform);
     }
+    //instantiate mainplayer
+    GameObject _mainPalyerObj = Instantiate(mainPlayer, new Vector2 (50, 50), Quaternion.identity) as GameObject;
+    MainPlayer _mainPlayer = _mainPalyerObj.GetComponent<MainPlayer> ();
+    _mainPlayer.Index = 0;
+    groupOfPlayersList.Insert (0, _mainPlayer);
+    _mainPlayer.transform.SetParent (GameObject.FindGameObjectWithTag ("GameController").transform);
     return groupOfPlayersList;
   }
 

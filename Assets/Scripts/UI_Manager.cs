@@ -74,9 +74,9 @@ public class UI_Manager : MonoBehaviour {
   }
 
   public IEnumerator WaitingForPlayerInput_Q2(){
-    while (myPhase02_QState != Phase_02_QuestionState.Answered) {
-      
-    }
+//    while (myPhase02_QState != Phase_02_QuestionState.Answered) {
+//      
+//    }
     yield return 0;
   }
 

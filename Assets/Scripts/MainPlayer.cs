@@ -23,9 +23,10 @@ public class MainPlayer : Individual {
     Debug.Log ("MainPlayer turn is running");
       OnMainPlayerDecisionPhase_01 ();
     Debug.Log ("after onDecision phase");
-      yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q1 ());
-      OnMainPlayerDecisionPhase_02 ();
-      yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q2 ());
+    yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q1 ());
+      //OnMainPlayerDecisionPhase_02 ();
+      //yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q2 ());
+		yield return 0;
   }
 
     //public void DigestDecision_02
@@ -35,7 +36,7 @@ public class MainPlayer : Individual {
     Debug.Log ("MainPlayer OnMyTurn is running ");
     //this function needs to be here...but 
    // if (turnPos == Index) {
-      OnMainPlayerTurn (turnPos);
+      StartCoroutine(OnMainPlayerTurn (turnPos));
     //}
   }
 
