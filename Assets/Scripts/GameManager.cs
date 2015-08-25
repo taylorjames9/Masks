@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 
   // Use this for initialization
   void Start () {
-    RandGroupNumInGame = Random.Range (2, 8);
+    RandGroupNumInGame = Random.Range (4, 9);
 	  Debug.Log ("RandGroup num = "+RandGroupNumInGame);
     RandMaskNumInGame = Random.Range (RandGroupNumInGame, RandGroupNumInGame * 4);
 	  Debug.Log ("RandMask num = "+RandMaskNumInGame);

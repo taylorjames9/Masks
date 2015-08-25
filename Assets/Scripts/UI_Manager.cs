@@ -10,11 +10,13 @@ public class UI_Manager : MonoBehaviour {
   public enum Phase_02_QuestionState {NotAsked, Asked, Answered};
   private Phase_02_QuestionState myPhase02_QState;
 
+  
   public Text masksInGame;
   public Text turnPosition;
 
   public GameObject Q1_DonePrompt;
   public GameObject Q2_DonePrompt;
+  public GameObject AttackWhomInstructions;
 
 	private bool q1_done;
 	private bool q2_done;
@@ -95,16 +97,46 @@ public class UI_Manager : MonoBehaviour {
   }
 
   //this is called from a UI button
-    public void Change_Q1_State(){
+  public void Change_Q1_State(){
     myPhase01_QState = Phase_01_QuestionState.Answered;
+		Q1_DonePrompt.SetActive (false);
 		Debug.Log ("task 1 is ANSWERED");
   }
 
   //this is called from a UI button
-    public Phase_02_QuestionState Change_Q2_State(Phase_02_QuestionState _qState){
-      myPhase02_QState = _qState;
-      return myPhase02_QState;
-    
+  public Phase_02_QuestionState Change_Q2_State(Phase_02_QuestionState _qState){
+    myPhase02_QState = _qState;
+		Q1_DonePrompt.SetActive (false);
+		return myPhase02_QState;
   }
+
+  public void Pass_Defend_Decision(){
+    MainPlayer.instance.PerformMyDecision ();
+  }
+
+  public void Attack_Decision(){
+    StartCoroutine (Attack_Decision_Wait_Prompt ());
+  }
+
+  public IEnumerator Attack_Decision_Wait_Prompt(){
+    AttackWhomInstructions.SetActive (true);
+    //Set reticle active here
+    yield return StartCoroutine(Waiting_On_AttackWhomDecision());
+  }
+
+  public IEnumerator Waiting_On_AttackWhomDecision(){
+    while(myAttackChoice != Attack_Whom.Answered){
+      yield return null;
+      }
+  }
+
+  public void Swap_Decision(){
+
+  }
+
+  public void Deliver_Decision(){
+
+  }
+
 
 }

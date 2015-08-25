@@ -8,6 +8,12 @@ public class MainPlayer : Individual {
   public delegate void PlayerDecisionPhase_02Action();
   public static event PlayerDecisionPhase_01Action OnMainPlayerDecisionPhase_02;
 
+  public static MainPlayer instance { get; set; }
+
+  void Awake(){
+    instance = this;
+  }
+
 	// Use this for initialization
 	void Start () {
 	  

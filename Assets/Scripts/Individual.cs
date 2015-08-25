@@ -21,6 +21,13 @@ public class Individual : MonoBehaviour {
 	public enum PlayerState{None, AtTrueChar, Dead, Bone, Alive};
 	private PlayerState _myState;
 
+  
+  public enum Attack_Whom {NotAsked, Asked, Answered};
+  private Attack_Whom myAttackChoiceEnum;
+
+  private int myAttackChoice;
+  public int MyAttackChoice{ get { return myAttackChoice; } set { myAttackChoice = value; } }
+  
 	public int Index{ get { return _index; } set { _index = value; } }
 	public MaskType TrueColor{ get { return _trueColor; } set { _trueColor = value;} }
 	public int TotalMaskOnMe{get{ return _totalNumMasksOnMe; } set{ _totalNumMasksOnMe = value;}}
