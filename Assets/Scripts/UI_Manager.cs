@@ -16,8 +16,11 @@ public class UI_Manager : MonoBehaviour {
   public GameObject Q1_DonePrompt;
   public GameObject Q2_DonePrompt;
 
+	private bool q1_done;
+	private bool q2_done;
+	public bool Q1_Done{get{ return q1_done; }set{q1_done = value;}}
+	public bool Q2_Done{ get { return q2_done; } set { q2_done = value; } }
 
-  //private enum 
 
   public static UI_Manager instance{ get; set; }
 
@@ -67,17 +70,17 @@ public class UI_Manager : MonoBehaviour {
 	}
 
   public IEnumerator WaitingForPlayerInput_Q1(){
-    while (myPhase01_QState != Phase_01_QuestionState.Answered) {
-
-    }
-    yield return 0;
+		Debug.Log ("Inside q1 waiting for input "+Time.time);
+			while(myPhase01_QState != Phase_01_QuestionState.Answered){
+				yield return null;
+			}
+    
   }
 
-  public IEnumerator WaitingForPlayerInput_Q2(){
-//    while (myPhase02_QState != Phase_02_QuestionState.Answered) {
-//      
-//    }
-    yield return 0;
+	public IEnumerator WaitingForPlayerInput_Q2(){
+    while (myPhase02_QState != Phase_02_QuestionState.Answered) {
+		  yield return null;
+    }
   }
 
 
@@ -87,12 +90,14 @@ public class UI_Manager : MonoBehaviour {
   }
 
   public void ShowPrompt_02 (){
-    
+    Q2_DonePrompt.SetActive (true);
+		Debug.Log ("Show prompt 2");
   }
 
   //this is called from a UI button
     public void Change_Q1_State(){
     myPhase01_QState = Phase_01_QuestionState.Answered;
+		Debug.Log ("task 1 is ANSWERED");
   }
 
   //this is called from a UI button

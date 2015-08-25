@@ -5,7 +5,7 @@ public class MainPlayer : Individual {
 
   public delegate void PlayerDecisionPhase_01Action();
   public static event PlayerDecisionPhase_01Action OnMainPlayerDecisionPhase_01;
-  public delegate void PlayerDecisionPhase_02Action(int UpperChoice, int specifics);
+  public delegate void PlayerDecisionPhase_02Action();
   public static event PlayerDecisionPhase_01Action OnMainPlayerDecisionPhase_02;
 
 	// Use this for initialization
@@ -21,12 +21,13 @@ public class MainPlayer : Individual {
   public IEnumerator OnMainPlayerTurn (int turnPos)
   {
     Debug.Log ("MainPlayer turn is running");
-      OnMainPlayerDecisionPhase_01 ();
+    OnMainPlayerDecisionPhase_01 ();
     Debug.Log ("after onDecision phase");
     yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q1 ());
-      //OnMainPlayerDecisionPhase_02 ();
-      //yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q2 ());
-		yield return 0;
+	Debug.Log ("Back to Main player after a brief break sponsored by coroutines "+Time.time);
+    OnMainPlayerDecisionPhase_02 ();
+    yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q2 ());
+    
   }
 
     //public void DigestDecision_02
@@ -39,5 +40,8 @@ public class MainPlayer : Individual {
       StartCoroutine(OnMainPlayerTurn (turnPos));
     //}
   }
+
+
+
 
 }

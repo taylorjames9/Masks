@@ -131,9 +131,17 @@ public class Individual : MonoBehaviour {
     }
     //yield return null;
 	}
-  
-  
 
+  //based on the method signature, we know that it is a pass(o arguments), an attack (1 argument) or a swap (2 arguments)
+  public void PerformMyDecision(/*no argument here means this is a pass*/){
 
+  }
 
+  public void PerformMyDecision(int _victim_index){
+    
+  }
+
+  public void PerformMyDecision(int myMaskToSwap, int vic_index){
+
+  }
 }
