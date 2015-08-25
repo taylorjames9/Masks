@@ -113,34 +113,54 @@ public class Individual : MonoBehaviour {
 
 	public virtual void OnMyTurn(int turnPos){
     if (turnPos == Index) {
-      Debug.Log ("Individual OnMyTurn is running. My index is : "+Index);
-      if(MyPlayerState == PlayerState.Dead){
-        OnTurnComplete();
+      Debug.Log ("Individual OnMyTurn is running. My index is : " + Index);
+      if (MyPlayerState == PlayerState.Dead || myMaskList.Count < 1) {
+        PerformMyDecision();
+        return;
       } else {
-        
-        //if Individual state is dead, skip turn
-        //Decide to go or not go (1/3 chance of pass)
-        //Choose a random mask from masks in possession
-        //if it is not a defense, choose a person (still in game) to apply it to
-        //do animation of action
-        //other person does reaction and updates their status
-        ////////OnTurnComplete ();
+        int goNogo = Random.Range (1, 100);
+        if (goNogo < 30) {
+          //0 param means pass;
+          PerformMyDecision ();
+          return;
+        }
       }
+        Mask randMaskToPerform = myMaskList [Random.Range (0, myMaskList.Count)];
+        switch (randMaskToPerform.MyMaskType) {
+        case MaskType.Attack:
+          int randTarget = GameManager.instance.groupOfPlayersList [Random.Range (0, GameManager.instance.groupOfPlayersList.Count)].Index;
+          PerformMyDecision (randTarget);
+          break;
+        case MaskType.Defend:
+          PerformMyDecision ();
+          break;
 
+        case MaskType.Switch:
+          int rt = GameManager.instance.groupOfPlayersList [Random.Range (0, GameManager.instance.groupOfPlayersList.Count)].Index;
+            //override if player is choosing, if not, choose random
+          int rm = myMaskList.IndexOf (myMaskList [Random.Range (0, myMaskList.Count)]);
+          PerformMyDecision (rm, rt);
+          break;
 
+        default:
+          Debug.Log ("No mask chosen on this player's turn");
+          break;
+        }
     }
-    //yield return null;
-	}
+  }
+
 
   //based on the method signature, we know that it is a pass(o arguments), an attack (1 argument) or a swap (2 arguments)
   public void PerformMyDecision(/*no argument here means this is a pass*/){
-
+    //OnTurnComplete();
   }
 
+  //this method signature means attack
   public void PerformMyDecision(int _victim_index){
     
   }
 
+  //this method signature means swap
   public void PerformMyDecision(int myMaskToSwap, int vic_index){
 
   }

@@ -63,16 +63,9 @@ public class Mask : MonoBehaviour {
 
   public void MaskFlyOff(){
     Debug.Log ("MASK FLIES OFF");
-    MyOwner.RemoveMask ();
     maskAnim.enabled = true;
-    float _currY = GetComponent<RectTransform>().localPosition.y;
-    float _offScreenPos = 20.0f;
-    float delta_y = 0;
-    while(_currY < _offScreenPos){
-      _currY += 0.001f;
-      GetComponent<RectTransform>().localPosition = new Vector2(GetComponent<RectTransform>().localPosition.x, _currY);
-    }
-    Invoke ("DestroyMask", 2.0f);
+    MyOwner.RemoveMask ();
+    Invoke ("DestroyMask", 0.75f);
     MyOwner.DisplayOnlyTopMask ();
   }
 
