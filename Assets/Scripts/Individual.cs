@@ -24,6 +24,7 @@ public class Individual : MonoBehaviour {
   
   public enum Attack_Whom {NotAsked, Asked, Answered};
   private Attack_Whom myAttackChoiceEnum;
+  public Attack_Whom MyAttackChoiceEnum{ get { return myAttackChoiceEnum; } set { myAttackChoiceEnum = value; } }
 
   private int myAttackChoice;
   public int MyAttackChoice{ get { return myAttackChoice; } set { myAttackChoice = value; } }
@@ -171,4 +172,21 @@ public class Individual : MonoBehaviour {
   public void PerformMyDecision(int myMaskToSwap, int vic_index){
 
   }
+
+  public void TurnOnMyReticle(){
+    //GetComponentInChildren<Animator> ().enabled = true;
+    Debug.Log ("Turn on my reticle");
+    transform.FindChild ("Reticle").gameObject.SetActive (true);
+      //gameObject.transform.GetComponent<Animator> ().enabled = true;
+    //Debug.Log ("child with name = "+transform.FindChild ("Reticle").name);
+
+  }
+
+  public void TurnOffMyReticle(){
+    //GetComponentInChildren<Animator> ().enabled = false;
+    Debug.Log ("Turn off my reticle");
+    //transform.FindChild ("Reticle").GetComponent<Animator> ().enabled = false;
+    transform.FindChild ("Reticle").gameObject.SetActive (false);
+  }
+
 }

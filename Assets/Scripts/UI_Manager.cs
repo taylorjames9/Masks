@@ -121,11 +121,12 @@ public class UI_Manager : MonoBehaviour {
   public IEnumerator Attack_Decision_Wait_Prompt(){
     AttackWhomInstructions.SetActive (true);
     //Set reticle active here
+    Debug.Log ("Set reticle active here");
     yield return StartCoroutine(Waiting_On_AttackWhomDecision());
   }
 
   public IEnumerator Waiting_On_AttackWhomDecision(){
-    while(myAttackChoice != Attack_Whom.Answered){
+    while(MainPlayer.instance.MyAttackChoiceEnum != MainPlayer.Attack_Whom.Answered){
       yield return null;
       }
   }

@@ -114,4 +114,11 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 	
 	}
+
+  public Individual GetIndividualwithIndex(int _index){
+    return groupOfPlayersList [_index];
+
+  }
+
+
 }
