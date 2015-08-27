@@ -54,6 +54,11 @@ public class MainPlayer : Individual {
 
   public override Individual SelectWhomSelection(Individual myChoice){
     MySelectWhomChoice = myChoice.Index;
+    myChoice.GetShot ();
+    foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
+      //turn off all reticles including mainplayer's
+
+    }
     UI_Manager.instance.MyPhase02_QState =  UI_Manager.Phase_02_QuestionState.Answered;
     return myChoice;
   }
