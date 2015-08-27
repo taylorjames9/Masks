@@ -178,7 +178,7 @@ public class Individual : MonoBehaviour {
     Debug.Log ("Turn on my reticle");
     transform.FindChild ("Reticle").gameObject.SetActive (true);
       //gameObject.transform.GetComponent<Animator> ().enabled = true;
-    //Debug.Log ("child with name = "+transform.FindChild ("Reticle").name);
+    Debug.Log ("child with name = "+transform.FindChild ("Reticle").name);
 
   }
 
