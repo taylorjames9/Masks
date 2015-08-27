@@ -99,6 +99,7 @@ public class UI_Manager : MonoBehaviour {
   //this is called from a UI button
   public void Change_Q1_State(){
     myPhase01_QState = Phase_01_QuestionState.Answered;
+    GameManager.instance.MyGameState = Game_State.CovertActionSelect;
 		Q1_DonePrompt.SetActive (false);
 		Debug.Log ("task 1 is ANSWERED");
   }
@@ -112,6 +113,7 @@ public class UI_Manager : MonoBehaviour {
 
   public void Pass_Defend_Decision(){
     MainPlayer.instance.PerformMyDecision ();
+    GameManager.instance.MyGameState = Game_State.NPCTurn;
   }
 
   public void Attack_Decision(){
@@ -120,9 +122,12 @@ public class UI_Manager : MonoBehaviour {
 
   public IEnumerator Attack_Decision_Wait_Prompt(){
     AttackWhomInstructions.SetActive (true);
-    //Set reticle active here
+    GameManager.instance.MyGameState = Game_State.SelectWhom;
     Debug.Log ("Set reticle active here");
     yield return StartCoroutine(Waiting_On_AttackWhomDecision());
+    //Play Animation for attack
+    Q2_DonePrompt.SetActive (false);
+    GameManager.instance.MyGameState = Game_State.NPCTurn;
   }
 
   public IEnumerator Waiting_On_AttackWhomDecision(){

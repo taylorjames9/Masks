@@ -30,13 +30,12 @@ public class MainPlayer : Individual {
     OnMainPlayerDecisionPhase_01 ();
     Debug.Log ("after onDecision phase");
     yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q1 ());
-	Debug.Log ("Back to Main player after a brief break sponsored by coroutines "+Time.time);
+	  Debug.Log ("Back to Main player after a brief break sponsored by coroutines "+Time.time);
     OnMainPlayerDecisionPhase_02 ();
     yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q2 ());
     
   }
 
-    //public void DigestDecision_02
   public override void OnMyTurn (int turnPos)
   {
     //do nothing
@@ -47,7 +46,10 @@ public class MainPlayer : Individual {
     //}
   }
 
-
+  public override Individual SelectWhomSelection(Individual myChoice){
+    MySelectWhomChoice = myChoice.Index;
+    return myChoice;
+  }
 
 
 }

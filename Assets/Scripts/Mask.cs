@@ -61,12 +61,21 @@ public class Mask : MonoBehaviour {
     return _a;
   }
 
-  public void MaskFlyOff(){
-    Debug.Log ("MASK FLIES OFF");
-    maskAnim.enabled = true;
-    MyOwner.RemoveMask ();
-    Invoke ("DestroyMask", 0.75f);
-    MyOwner.DisplayOnlyTopMask ();
+  public void MaskClick(){
+    switch (GameManager.instance.MyGameState) {
+    case Game_State.Flipping:
+      Debug.Log ("MASK FLIES OFF");
+      maskAnim.enabled = true;
+      MyOwner.RemoveMask ();
+      Invoke ("DestroyMask", 0.75f);
+      MyOwner.DisplayOnlyTopMask ();
+      break;
+    case Game_State.SelectWhom:
+      Debug.Log ("Select whom is active");
+      MainPlayer.instance.SelectWhomSelection(MyOwner);
+      Debug.Log ("I selected "+MyOwner.Index);
+      break;
+    }
   }
 
   public void DestroyMask(){

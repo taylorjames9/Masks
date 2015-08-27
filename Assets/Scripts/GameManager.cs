@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour {
+public enum Game_State {None, Flipping, CovertActionSelect, SelectWhom, SelectMask, NPCTurn};
 
+public class GameManager : MonoBehaviour {
 
   public GameObject _proto_individual;
   public GameObject mainPlayer;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour {
   public int TurnPosition{ get { return _turnPosition; } set { _turnPosition = value; } }
 
   public static GameManager instance { get ; set;}
+  public Game_State MyGameState{ get; set; }
 
   public delegate void TurnChangeAction(int _turnPos);
   public static event TurnChangeAction OnTurnChange;
@@ -37,12 +39,13 @@ public class GameManager : MonoBehaviour {
 
   // Use this for initialization
   void Start () {
-    RandGroupNumInGame = Random.Range (4, 9);
+    MyGameState = Game_State.Flipping;
+    RandGroupNumInGame = Random.Range (5, 9);
 	  Debug.Log ("RandGroup num = "+RandGroupNumInGame);
-    RandMaskNumInGame = Random.Range (RandGroupNumInGame, RandGroupNumInGame * 4);
+    RandMaskNumInGame = Random.Range (RandGroupNumInGame*3, RandGroupNumInGame * 5);
 	  Debug.Log ("RandMask num = "+RandMaskNumInGame);
     CreateGroupOfPlayers ();
-    PlotGroupInCircle (RandGroupNumInGame, 4.0f, new Vector2 (0, 0));
+    PlotGroupInCircle (RandGroupNumInGame, 2.5f, new Vector2 (0, 0));
     DistributeMasksToGroup ();
     AdvanceTurn ();
   }
@@ -67,12 +70,12 @@ public class GameManager : MonoBehaviour {
   private void PlotGroupInCircle(int _numInGame, double radius, Vector2 center)
   {
     int i = 0;
-    float slice = 2 * Mathf.PI / _numInGame +1;
+    float slice = (2 * Mathf.PI) / _numInGame;
     foreach (Individual indie in groupOfPlayersList) {
       i++;
       float angle = slice * i;
-      int newX = (int)(center.x + radius * Mathf.Cos (angle));
-      int newY = (int)(center.y + radius * Mathf.Sin (angle));
+      int newX = (int)(center.x + (radius+(Random.value * 2)) * Mathf.Cos (angle));
+      int newY = (int)(center.y + (radius+(Random.value*2)) * Mathf.Sin (angle));
       Vector2 p = new Vector2 (newX, newY);
       //Debug.Log ("point p "+p.ToString());
       indie.transform.position = p;

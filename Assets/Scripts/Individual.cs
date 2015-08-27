@@ -21,13 +21,14 @@ public class Individual : MonoBehaviour {
 	public enum PlayerState{None, AtTrueChar, Dead, Bone, Alive};
 	private PlayerState _myState;
 
+
   
   public enum Attack_Whom {NotAsked, Asked, Answered};
   private Attack_Whom myAttackChoiceEnum;
   public Attack_Whom MyAttackChoiceEnum{ get { return myAttackChoiceEnum; } set { myAttackChoiceEnum = value; } }
 
-  private int myAttackChoice;
-  public int MyAttackChoice{ get { return myAttackChoice; } set { myAttackChoice = value; } }
+  private int mySelectWhomChoice;
+  public int MySelectWhomChoice{ get { return mySelectWhomChoice; } set { mySelectWhomChoice = value; } }
   
 	public int Index{ get { return _index; } set { _index = value; } }
 	public MaskType TrueColor{ get { return _trueColor; } set { _trueColor = value;} }
@@ -53,9 +54,6 @@ public class Individual : MonoBehaviour {
 		GameManager.OnTurnChange -= OnMyTurn;
 
 	}
-
-
-
 	// Use this for initialization
 	void Start () {
 
@@ -173,20 +171,23 @@ public class Individual : MonoBehaviour {
 
   }
 
-  public void TurnOnMyReticle(){
-    //GetComponentInChildren<Animator> ().enabled = true;
-    Debug.Log ("Turn on my reticle");
-    transform.FindChild ("Reticle").gameObject.SetActive (true);
-      //gameObject.transform.GetComponent<Animator> ().enabled = true;
-    Debug.Log ("child with name = "+transform.FindChild ("Reticle").name);
+  public virtual Individual SelectWhomSelection(Individual myChoice){
+    MySelectWhomChoice = myChoice.Index;
+    return myChoice;
+  }
 
+  public void TurnOnMyReticle(){
+    if (GameManager.instance.MyGameState == Game_State.SelectWhom) {
+      //Debug.Log ("Turn on my reticle");
+      transform.FindChild ("Reticle").gameObject.SetActive (true);
+    }
   }
 
   public void TurnOffMyReticle(){
-    //GetComponentInChildren<Animator> ().enabled = false;
-    Debug.Log ("Turn off my reticle");
-    //transform.FindChild ("Reticle").GetComponent<Animator> ().enabled = false;
-    transform.FindChild ("Reticle").gameObject.SetActive (false);
+    if (GameManager.instance.MyGameState == Game_State.SelectWhom) {
+      //Debug.Log ("Turn off my reticle");
+      transform.FindChild ("Reticle").gameObject.SetActive (false);
+    }
   }
 
 }
