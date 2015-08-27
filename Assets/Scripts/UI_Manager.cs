@@ -9,7 +9,7 @@ public class UI_Manager : MonoBehaviour {
 
   public enum Phase_02_QuestionState {NotAsked, Asked, Answered};
   private Phase_02_QuestionState myPhase02_QState;
-
+  public Phase_02_QuestionState MyPhase02_QState{ get { return myPhase02_QState; } set { myPhase02_QState = value; } }
   
   public Text masksInGame;
   public Text turnPosition;

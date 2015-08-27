@@ -190,4 +190,29 @@ public class Individual : MonoBehaviour {
     }
   }
 
+  public void GetShot(){
+    Debug.Log (Index + " Got shot");
+    if (myMaskList.Count > 0) {
+      //perform animation
+      RemoveMask();
+    } else {
+      //Ultra Death animation
+      //Player may lose game
+
+    }
+  }
+
+  public void GetSwapped(){
+
+  }
+
+  public void GetDelivery(){
+
+  }
+
+  public void GetFlipped(){
+
+
+  }
+
 }

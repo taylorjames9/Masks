@@ -33,7 +33,13 @@ public class MainPlayer : Individual {
 	  Debug.Log ("Back to Main player after a brief break sponsored by coroutines "+Time.time);
     OnMainPlayerDecisionPhase_02 ();
     yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q2 ());
-    
+    Debug.Log ("Made it past phase 2");
+    //PerformAction
+    GameManager.instance.MyGameState = Game_State.NPCTurn;
+    //write reactions in individual for getShot, getSwapped, getFlipped
+
+
+    //OnTurnComplete (); //Fire an event in parent.
   }
 
   public override void OnMyTurn (int turnPos)
@@ -48,6 +54,7 @@ public class MainPlayer : Individual {
 
   public override Individual SelectWhomSelection(Individual myChoice){
     MySelectWhomChoice = myChoice.Index;
+    UI_Manager.instance.MyPhase02_QState =  UI_Manager.Phase_02_QuestionState.Answered;
     return myChoice;
   }
 
