@@ -72,7 +72,7 @@ public class Mask : MonoBehaviour {
       break;
     case Game_State.SelectWhom:
       Debug.Log ("Select whom is active");
-      MainPlayer.instance.SelectWhomSelection(MyOwner);
+      MainPlayer.instance.SetSelectWhomSelection(MyOwner);
 
       Debug.Log ("I selected "+MyOwner.Index);
       break;

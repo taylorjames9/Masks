@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour {
     CreateGroupOfPlayers ();
     PlotGroupInCircle (RandGroupNumInGame, 2.5f, new Vector2 (0, 0));
     DistributeMasksToGroup ();
-    AdvanceTurn ();
+    //AdvanceTurn ();
   }
   
   public List<Individual> CreateGroupOfPlayers(){
@@ -109,8 +109,10 @@ public class GameManager : MonoBehaviour {
 		//Moves the turn reticle to next individual
     //Debug.Log ("Advance turn is running");
     //sTurnPosition++;
+		//OnTurnChange (TurnPosition);
+    TurnPosition++;
     Debug.Log ("Advance turn to : " + TurnPosition);
-		OnTurnChange (TurnPosition);
+    OnTurnChange (TurnPosition);
 	}
 
 	// Update is called once per frame
