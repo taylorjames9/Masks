@@ -25,10 +25,15 @@ public class Individual : MonoBehaviour {
 	public enum PlayerState{None, AtTrueChar, Dead, Bone, Alive};
 	private PlayerState _myState;
 
-  public Individual AttackWhom{ get; set; }
-  public Mask SwapWhat{ get; set; }
-  public Individual SwapWhom{ get; set; }
-  public Individual DeliverWhom{ get; set; }
+  private Individual attackWhom;
+  private Mask swapWhat;
+  private Individual swapWhom;
+  private Individual deliverWhom;
+
+  public Individual AttackWhom{ get { return attackWhom; } set { attackWhom = value; } }
+  public Mask SwapWhat{ get { return swapWhat; } set { swapWhat = value; } }
+  public Individual SwapWhom{ get { return swapWhom; } set { swapWhom = value; } }
+  public Individual DeliverWhom{ get{ return deliverWhom; } set{deliverWhom = value;} }
 
   public CovertIntention MyCovertIntention{ get; set; }
   
@@ -71,8 +76,10 @@ public class Individual : MonoBehaviour {
       GetComponent<Image>().color = new Color(GetComponent<Image>().color.r,GetComponent<Image>().color.g,GetComponent<Image>().color.b, 1.0f);
       return;
     }else {
-      myMaskList [myMaskList.Count - 1].ChangeAlphaColor (1.0f);
-
+      foreach(Mask ms in myMaskList){
+        ms.ChangeAlphaColor(0.0f);
+      }
+      CheckTopMask().ChangeAlphaColor (1.0f);
     }
   }
 
@@ -113,6 +120,7 @@ public class Individual : MonoBehaviour {
 	}
 
   public void RemoveMask(){
+    myMaskList[myMaskList.Count-1].MaskAnimation();
     myMaskList.RemoveAt (myMaskList.Count - 1);
     CheckPlayerState ();
     //CheckTopMask ();
@@ -142,8 +150,15 @@ public class Individual : MonoBehaviour {
           PerformMyDecision(AttackWhom);
           MyCovertIntention = CovertIntention.None;
           ClearSelectWhomSelection(this);
-          if(Index == 0)
+          if(Index == 0){
             GameManager.instance.MyGameState = Game_State.NPCTurn;
+            UI_Manager.instance.Q1_Prompt.SetActive(false);
+            UI_Manager.instance.Q2_Prompt.SetActive(false);
+            Debug.Log ("Q1 prompt and Q2 prompt should be inactive");
+          } else if(Index == GameManager.instance.groupOfPlayersList.Count -1){
+            GameManager.instance.MyGameState = Game_State.Flipping;
+            UI_Manager.instance.Q1_Prompt.SetActive(true);
+          }
           OnTurnComplete();
         }
         break;
@@ -176,7 +191,7 @@ public class Individual : MonoBehaviour {
 	}
 
 	public virtual void OnMyTurn(int turnPos){
-
+    //Choose a random action. 
   }
 
 
@@ -187,7 +202,10 @@ public class Individual : MonoBehaviour {
 
   //this method signature means attack
   public void PerformMyDecision(Individual victim){
+    GameObject.Find ("Audio_Manager").GetComponent<AudioSource> ().Play ();
     victim.GetShot ();
+    victim.TurnOffMyReticle ();
+
   }
 
   //this method signature means swap
@@ -229,6 +247,13 @@ public class Individual : MonoBehaviour {
   //reaction
   public void GetShot(){
     Debug.Log (Index + " Got shot");
+    bool bulletProof;
+    foreach (Mask msk in myMaskList) {
+      if(msk.MyMaskType == MaskType.Defend){
+        bulletProof = true;
+      }
+    }
+
     if (myMaskList.Count > 1) {
       //perform animation
       RemoveMask();

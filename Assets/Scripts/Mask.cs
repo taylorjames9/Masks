@@ -65,18 +65,24 @@ public class Mask : MonoBehaviour {
     switch (GameManager.instance.MyGameState) {
     case Game_State.Flipping:
       Debug.Log ("MASK FLIES OFF");
-      maskAnim.enabled = true;
+      MaskAnimation();
       MyOwner.RemoveMask ();
-      Invoke ("DestroyMask", 0.75f);
-      MyOwner.DisplayOnlyTopMask ();
+
+
       break;
     case Game_State.SelectWhom:
       Debug.Log ("Select whom is active");
+      //This might need to be moved to another area. What about select for swap?
+      //MaskAnimation();
       MainPlayer.instance.SetSelectWhomSelection(MyOwner);
-
       Debug.Log ("I selected "+MyOwner.Index);
       break;
     }
+  }
+
+  public void MaskAnimation(){
+    maskAnim.enabled = true;
+    Invoke ("DestroyMask", 1.0f);
   }
 
   public void DestroyMask(){

@@ -14,16 +14,6 @@ public class MainPlayer : Individual {
     instance = this;
   }
 
-	// Use this for initialization
-	void Start () {
-	  
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
   public IEnumerator OnMainPlayerTurn (int turnPos)
   {
     Debug.Log ("MainPlayer turn is running");
@@ -39,10 +29,10 @@ public class MainPlayer : Individual {
   public override void OnMyTurn (int turnPos)
   {
     //do nothing
-    Debug.Log ("MainPlayer OnMyTurn is running ");
     //this function needs to be here...but 
-   // if (turnPos == Index) {
+    if (turnPos == Index) {
+      Debug.Log ("MainPlayer OnMyTurn is running ");
       StartCoroutine(OnMainPlayerTurn (turnPos));
-    //}
+    }
   }  
 }

@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour {
     //sTurnPosition++;
 		//OnTurnChange (TurnPosition);
     TurnPosition++;
-    Debug.Log ("Advance turn to : " + TurnPosition);
+    Debug.Log ("Advance turn to : " + TurnPosition+"+1");
     OnTurnChange (TurnPosition);
 	}
 
