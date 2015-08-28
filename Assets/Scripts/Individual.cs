@@ -133,6 +133,7 @@ public class Individual : MonoBehaviour {
     Debug.Log ("Is it my turn ?" + IsItMyTurn ()+" index "+ Index );
     if (IsItMyTurn ()) {
       Debug.Log ("My covert intention "+MyCovertIntention);
+      //if NPC.......Generate random covert intention
       switch(MyCovertIntention){
       case CovertIntention.Defend:
         Debug.Log("Inside defend pass");
@@ -192,6 +193,49 @@ public class Individual : MonoBehaviour {
 
 	public virtual void OnMyTurn(int turnPos){
     //Choose a random action. 
+    if (turnPos == Index) {
+      GameManager.instance.MyGameState = Game_State.NPCTurn;
+      StartCoroutine(NPCTURN());
+
+    }
+  }
+
+  public IEnumerator NPCTURN(){
+    //Start a thinking animation. 
+    yield return new WaitForSeconds (2.0f);
+    Debug.Log ("MY TURN MOFOS: "+Index);
+    int r = Random.Range (1, 100);
+    if (r < 20) {
+      PerformMyDecision ();
+      Debug.Log ("FIRST PASS");
+    }
+    int m = Random.Range (0, myMaskList.Count-1);
+    Mask myAction = myMaskList[m];
+    switch(myAction.MyMaskType){
+    case MaskType.Attack:
+      int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count -1);
+      Individual vic = GameManager.instance.groupOfPlayersList[r_whom];
+      vic.TurnOnMyReticle();
+      yield return new WaitForSeconds(1.5f);
+      PerformMyDecision(vic);
+      break;
+    case MaskType.Defend:
+      yield return new WaitForSeconds(1.5f);
+      PerformMyDecision();
+      break;
+    case MaskType.Switch:
+      int r_swapMask = Random.Range(0, myMaskList.Count-1);
+      Mask myOwnMaskToSwap = myMaskList[r_swapMask];
+      int r_swapVic = Random.Range(0, GameManager.instance.groupOfPlayersList.Count -1);
+      Individual vic_toSwap = GameManager.instance.groupOfPlayersList[r_swapVic];
+      yield return new WaitForSeconds(1.5f);
+      PerformMyDecision(myOwnMaskToSwap, vic_toSwap);
+      break;
+    default:
+
+      break;
+    }
+   
   }
 
 
@@ -204,7 +248,7 @@ public class Individual : MonoBehaviour {
   public void PerformMyDecision(Individual victim){
     GameObject.Find ("Audio_Manager").GetComponent<AudioSource> ().Play ();
     victim.GetShot ();
-    victim.TurnOffMyReticle ();
+    //victim.TurnOffMyReticle ();
 
   }
 
@@ -253,19 +297,22 @@ public class Individual : MonoBehaviour {
         bulletProof = true;
       }
     }
-
     if (myMaskList.Count > 1) {
       //perform animation
       RemoveMask();
     } else {
       //Ultra Death animation
       //Player may lose game
-
     }
+    TurnOffMyReticle ();
   }
   //reaction
-  public void GetSwapped(){
-
+  public void GetSwapped(Individual sender){
+    if (myMaskList.Count > 0) {
+      int r = Random.Range (0, myMaskList.Count - 1);
+      Mask myMaskToSwapOut = myMaskList [r];
+      
+    }
   }
   //reaction
   public void GetDelivery(){

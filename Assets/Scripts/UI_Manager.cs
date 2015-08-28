@@ -59,14 +59,7 @@ public class UI_Manager : MonoBehaviour {
 	void Update () {
 	
 	}
-//
-//  public IEnumerator WaitingForPlayerInput_Q1(){
-//		Debug.Log ("Inside q1 waiting for input "+Time.time);
-//			while(myPhase01_QState != Phase_01_QuestionState.Answered){
-//				yield return null;
-//			}
-//  }
-
+ 
 
   public void ShowPrompt_01 (){
     Debug.Log ("Show prompt");
