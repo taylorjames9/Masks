@@ -202,40 +202,46 @@ public class Individual : MonoBehaviour {
 
   public IEnumerator NPCTURN(){
     //Start a thinking animation. 
-    yield return new WaitForSeconds (2.0f);
-    Debug.Log ("MY TURN MOFOS: "+Index);
-    int r = Random.Range (1, 100);
-    if (r < 20) {
-      PerformMyDecision ();
-      Debug.Log ("FIRST PASS");
-    }
-    int m = Random.Range (0, myMaskList.Count-1);
-    Mask myAction = myMaskList[m];
-    switch(myAction.MyMaskType){
-    case MaskType.Attack:
-      int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count -1);
-      Individual vic = GameManager.instance.groupOfPlayersList[r_whom];
-      vic.TurnOnMyReticle();
-      yield return new WaitForSeconds(1.5f);
-      PerformMyDecision(vic);
-      break;
-    case MaskType.Defend:
-      yield return new WaitForSeconds(1.5f);
-      PerformMyDecision();
-      break;
-    case MaskType.Switch:
-      int r_swapMask = Random.Range(0, myMaskList.Count-1);
-      Mask myOwnMaskToSwap = myMaskList[r_swapMask];
-      int r_swapVic = Random.Range(0, GameManager.instance.groupOfPlayersList.Count -1);
-      Individual vic_toSwap = GameManager.instance.groupOfPlayersList[r_swapVic];
-      yield return new WaitForSeconds(1.5f);
-      PerformMyDecision(myOwnMaskToSwap, vic_toSwap);
-      break;
-    default:
+    if (MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead) {
+      yield return new WaitForSeconds (2.0f);
+      Debug.Log ("MY TURN MOFOS: " + Index);
+      int r = Random.Range (1, 100);
+      if (r < 20) {
+        PerformMyDecision ();
+        Debug.Log ("FIRST PASS");
+      }
+      int m = Random.Range (0, myMaskList.Count - 1);
+      Mask myAction = myMaskList [m];
+      Debug.Log (" NPC mask = "+myAction.MyMaskType.ToString());
+      switch (myAction.MyMaskType) {
+      case MaskType.Attack:
+        Debug.Log ("I chose attack!");
+        int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
+        Individual vic = GameManager.instance.groupOfPlayersList [r_whom];
+        vic.TurnOnMyReticle ();
+        yield return new WaitForSeconds (1.5f);
+        PerformMyDecision (vic);
+        break;
+      case MaskType.Defend:
+        Debug.Log ("I chose DEFEND!");
+        yield return new WaitForSeconds (1.5f);
+        PerformMyDecision ();
+        break;
+      case MaskType.Switch:
+        Debug.Log ("I chose SWITCH!");
+        int r_swapMask = Random.Range (0, myMaskList.Count - 1);
+        Mask myOwnMaskToSwap = myMaskList [r_swapMask];
+        int r_swapVic = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
+        Individual vic_toSwap = GameManager.instance.groupOfPlayersList [r_swapVic];
+        yield return new WaitForSeconds (1.5f);
+        PerformMyDecision (myOwnMaskToSwap, vic_toSwap);
+        break;
+      default:
 
-      break;
+        break;
+      }
+      OnTurnComplete();
     }
-   
   }
 
 
@@ -254,6 +260,17 @@ public class Individual : MonoBehaviour {
 
   //this method signature means swap
   public void PerformMyDecision(Mask myMaskToSwap, Individual swapW){
+
+    int myRand = Random.Range (0, myMaskList.Count - 1);
+    int theirRand = Random.Range (0, swapW.myMaskList.Count - 1);
+    Mask mySwapMask = myMaskList [myRand];
+    Mask theirSwapMask = swapW.myMaskList [theirRand];
+    myMaskList.RemoveAt (myRand);
+    swapW.myMaskList.RemoveAt (theirRand);
+    myMaskList.Insert (myRand, theirSwapMask);
+    swapW.myMaskList.Insert (theirRand, mySwapMask);
+    DisplayOnlyTopMask ();
+    swapW.DisplayOnlyTopMask ();
 
   }
 
@@ -309,9 +326,9 @@ public class Individual : MonoBehaviour {
   //reaction
   public void GetSwapped(Individual sender){
     if (myMaskList.Count > 0) {
-      int r = Random.Range (0, myMaskList.Count - 1);
-      Mask myMaskToSwapOut = myMaskList [r];
-      
+      //int r = Random.Range (0, myMaskList.Count - 1);
+      //Mask myMaskToSwapOut = myMaskList [r];
+      Debug.Log ("I got swapped at Bob's swap shop!");
     }
   }
   //reaction
