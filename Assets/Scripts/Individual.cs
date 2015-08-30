@@ -11,6 +11,9 @@ public class Individual : MonoBehaviour {
 
   public Sprite skull;
 
+  public AudioClip Shotgun;
+  public AudioClip Swish;
+
 	private int _index;
 	private MaskType _trueColor; 
 	private int _totalNumMasksOnMe;
@@ -120,19 +123,25 @@ public class Individual : MonoBehaviour {
 	}
 
   public void RemoveMask(){
-    myMaskList[myMaskList.Count-1].MaskAnimation();
-    myMaskList.RemoveAt (myMaskList.Count - 1);
-    CheckPlayerState ();
-    //CheckTopMask ();
-    DisplayOnlyTopMask ();
-    OnMaskRemoval ();
+    if (myMaskList.Count > 0) {
+      if (GameManager.instance.MyGameState == Game_State.Flipping) {
+        SoundManager.instance.PlaySingle (Swish);
+      }
+      myMaskList [myMaskList.Count - 1].MaskAnimation ();
+      myMaskList.RemoveAt (myMaskList.Count - 1);
+      CheckPlayerState ();
+      DisplayOnlyTopMask ();
+      OnMaskRemoval ();
+    } else {
+      DisplayOnlyTopMask();
+    }
   }
 
 	// Update is called once per frame
 	void Update () {
-    Debug.Log ("Is it my turn ?" + IsItMyTurn ()+" index "+ Index );
-    if (IsItMyTurn ()) {
-      Debug.Log ("My covert intention "+MyCovertIntention);
+//    Debug.Log ("Is it my turn ?" + IsItMyTurn ()+" index "+ Index );
+    if (IsItMyTurn () && Index == 0) {
+      Debug.Log ("Main Player Update running covert intention "+MyCovertIntention);
       //if NPC.......Generate random covert intention
       switch(MyCovertIntention){
       case CovertIntention.Defend:
@@ -140,107 +149,111 @@ public class Individual : MonoBehaviour {
 
         PerformMyDecision();
         MyCovertIntention = CovertIntention.None;
-        if(Index == 0)
-          GameManager.instance.MyGameState = Game_State.NPCTurn;
-        OnTurnComplete();
+        GameManager.instance.MyGameState = Game_State.NPCTurn;
+        ClearMyTurn ();
+
         break;
       case CovertIntention.Attack:
         Debug.Log ("Attack whom = "+AttackWhom);
         if(AttackWhom != null){
           Debug.Log("Inside attack and attack WHOM NOT NUll");
           PerformMyDecision(AttackWhom);
-          MyCovertIntention = CovertIntention.None;
-          ClearSelectWhomSelection(this);
-          if(Index == 0){
-            GameManager.instance.MyGameState = Game_State.NPCTurn;
-            UI_Manager.instance.Q1_Prompt.SetActive(false);
-            UI_Manager.instance.Q2_Prompt.SetActive(false);
-            Debug.Log ("Q1 prompt and Q2 prompt should be inactive");
-          } else if(Index == GameManager.instance.groupOfPlayersList.Count -1){
-            GameManager.instance.MyGameState = Game_State.Flipping;
-            UI_Manager.instance.Q1_Prompt.SetActive(true);
-          }
-          OnTurnComplete();
+          ClearMyTurn ();
         }
         break;
       case CovertIntention.Swap:
         if(SwapWhat !=null && SwapWhom!= null){
           Debug.Log("Inside swap and swapWhat and swapWhom NOT NUll");
           PerformMyDecision(SwapWhat, SwapWhom);
-          MyCovertIntention = CovertIntention.None;
-          ClearSelectWhomSelection(this);
-          if(Index == 0)
-            GameManager.instance.MyGameState = Game_State.NPCTurn;
-          OnTurnComplete();
+          ClearMyTurn ();
         }
         break;
       case CovertIntention.Deliver:
         if(DeliverWhom != null){
           Debug.Log("Inside deliver and DeliverWhom NOT NUll");
           PerformMyDecision("d", DeliverWhom);
-          MyCovertIntention = CovertIntention.None;
-          DeliverWhom = null;
-          if(Index == 0)
-            GameManager.instance.MyGameState = Game_State.NPCTurn;
-          OnTurnComplete();
+          ClearMyTurn ();
         }
         break;
       default:
         break;
       }
+      //OnTurnComplete();
     }
 	}
 
 	public virtual void OnMyTurn(int turnPos){
     //Choose a random action. 
-    if (turnPos == Index) {
+    if (turnPos == Index && turnPos != 0 && MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead) {
       GameManager.instance.MyGameState = Game_State.NPCTurn;
-      StartCoroutine(NPCTURN());
-
+      transform.FindChild ("thoughtbubble").gameObject.SetActive (true);
+      StartCoroutine (NPCTURN ());
+    } else {
+      Debug.Log ("Passed because I am dead or bone");
+      OnTurnComplete();
     }
   }
 
+  public virtual void ClearMyTurn (){
+    if (Index == 0) {
+      MyCovertIntention = CovertIntention.None;
+      UI_Manager.instance.Q1_Prompt.SetActive(false);
+      UI_Manager.instance.Q2_Prompt.SetActive(false);
+      //TODO Add some here to turn off Instruction plaque
+    }
+    GameManager.instance.MyGameState = Game_State.None;
+    transform.FindChild ("thoughtbubble").gameObject.SetActive (false);
+    AttackWhom = null;
+    SwapWhat = null;
+    SwapWhom = null;
+    DeliverWhom = null;
+    OnTurnComplete();
+    Debug.Log ("Cleared my turn for: " + Index);
+  }
+
   public IEnumerator NPCTURN(){
-    //Start a thinking animation. 
     if (MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead) {
       yield return new WaitForSeconds (2.0f);
       Debug.Log ("MY TURN MOFOS: " + Index);
       int r = Random.Range (1, 100);
       if (r < 20) {
         PerformMyDecision ();
-        Debug.Log ("FIRST PASS");
+        Debug.Log ("RIGHT AWAY I'M GOING TO PASS "+Index);
       }
+      ;
+      if(myMaskList.Count > 0){
       int m = Random.Range (0, myMaskList.Count - 1);
       Mask myAction = myMaskList [m];
-      Debug.Log (" NPC mask = "+myAction.MyMaskType.ToString());
+      Debug.Log ("NpC "+Index+" intention to use NPC mask = "+myAction.MyMaskType.ToString());
       switch (myAction.MyMaskType) {
       case MaskType.Attack:
-        Debug.Log ("I chose attack!");
+        GameManager.instance.MyGameState = Game_State.SelectWhom;
         int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
         Individual vic = GameManager.instance.groupOfPlayersList [r_whom];
         vic.TurnOnMyReticle ();
         yield return new WaitForSeconds (1.5f);
         PerformMyDecision (vic);
+        ClearMyTurn();
         break;
       case MaskType.Defend:
-        Debug.Log ("I chose DEFEND!");
         yield return new WaitForSeconds (1.5f);
         PerformMyDecision ();
+        ClearMyTurn();
         break;
       case MaskType.Switch:
-        Debug.Log ("I chose SWITCH!");
         int r_swapMask = Random.Range (0, myMaskList.Count - 1);
         Mask myOwnMaskToSwap = myMaskList [r_swapMask];
         int r_swapVic = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
         Individual vic_toSwap = GameManager.instance.groupOfPlayersList [r_swapVic];
         yield return new WaitForSeconds (1.5f);
         PerformMyDecision (myOwnMaskToSwap, vic_toSwap);
+        ClearMyTurn();
         break;
       default:
-
+          Debug.Log ("Mask type for an NPC turn seems to be unknown."+ Index);
         break;
       }
-      OnTurnComplete();
+      }
     }
   }
 
@@ -252,25 +265,31 @@ public class Individual : MonoBehaviour {
 
   //this method signature means attack
   public void PerformMyDecision(Individual victim){
-    GameObject.Find ("Audio_Manager").GetComponent<AudioSource> ().Play ();
+    SoundManager.instance.PlaySingle (Shotgun);
     victim.GetShot ();
-    //victim.TurnOffMyReticle ();
-
   }
 
   //this method signature means swap
   public void PerformMyDecision(Mask myMaskToSwap, Individual swapW){
-
-    int myRand = Random.Range (0, myMaskList.Count - 1);
-    int theirRand = Random.Range (0, swapW.myMaskList.Count - 1);
-    Mask mySwapMask = myMaskList [myRand];
-    Mask theirSwapMask = swapW.myMaskList [theirRand];
-    myMaskList.RemoveAt (myRand);
-    swapW.myMaskList.RemoveAt (theirRand);
-    myMaskList.Insert (myRand, theirSwapMask);
-    swapW.myMaskList.Insert (theirRand, mySwapMask);
-    DisplayOnlyTopMask ();
-    swapW.DisplayOnlyTopMask ();
+    if (myMaskList.Count > 0 && swapW.myMaskList.Count > 0) {
+      Debug.Log ("Performing a swap decision THIS IS NULL RIGHT NOW. "+Index);
+//      int myRand = Random.Range (0, myMaskList.Count - 1);
+//      int theirRand = Random.Range (0, swapW.myMaskList.Count - 1);
+//      Mask mySwapMask = myMaskList [myRand];
+//      Mask theirSwapMask = swapW.myMaskList [theirRand];
+//
+//      myMaskList.Insert (myRand, theirSwapMask);
+//      theirSwapMask.GetComponent<RectTransform>().localPosition = transform.GetComponent<RectTransform>().localPosition;
+//      swapW.myMaskList.Insert (theirRand, mySwapMask);
+//      myMaskToSwap.GetComponent<RectTransform>().localPosition = swapW.transform.GetComponent<RectTransform>().localPosition;
+//      myMaskList.Remove(mySwapMask);
+//      swapW.myMaskList.Remove(theirSwapMask);
+//      DisplayOnlyTopMask ();
+//      swapW.DisplayOnlyTopMask ();
+    } else {
+      Debug.Log ("Passing on a swap Decision because SOMEONE DOES HAVE ENOUGH MASKS. "+Index);
+      PerformMyDecision();
+    }
 
   }
 
@@ -308,19 +327,14 @@ public class Individual : MonoBehaviour {
   //reaction
   public void GetShot(){
     Debug.Log (Index + " Got shot");
-    bool bulletProof;
+    bool bulletProof = false;
     foreach (Mask msk in myMaskList) {
       if(msk.MyMaskType == MaskType.Defend){
         bulletProof = true;
       }
     }
-    if (myMaskList.Count > 1) {
-      //perform animation
+    if (myMaskList.Count >= 1 && !bulletProof) 
       RemoveMask();
-    } else {
-      //Ultra Death animation
-      //Player may lose game
-    }
     TurnOffMyReticle ();
   }
   //reaction

@@ -64,11 +64,9 @@ public class Mask : MonoBehaviour {
   public void MaskClick(){
     switch (GameManager.instance.MyGameState) {
     case Game_State.Flipping:
-      Debug.Log ("MASK FLIES OFF");
+      //Debug.Log ("MASK FLIES OFF");
       MaskAnimation();
       MyOwner.RemoveMask ();
-
-
       break;
     case Game_State.SelectWhom:
       Debug.Log ("Select whom is active");
@@ -76,6 +74,7 @@ public class Mask : MonoBehaviour {
       //MaskAnimation();
       MainPlayer.instance.SetSelectWhomSelection(MyOwner);
       Debug.Log ("I selected "+MyOwner.Index);
+      //SoundManager.instance.PlaySingle(
       break;
     }
   }

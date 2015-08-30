@@ -72,13 +72,13 @@ public class UI_Manager : MonoBehaviour {
     GameManager.instance.MyGameState = Game_State.CovertActionSelect;
     Q1_Prompt.SetActive (false);
     Q2_Prompt.SetActive (true);
-		Debug.Log ("task 1 is ANSWERED. On to TASK 2");
+		//Debug.Log ("task 1 is ANSWERED. On to TASK 2");
   }
 
   //for button
   public void Pass_Defend_Decision(){
     MainPlayer.instance.MyCovertIntention = CovertIntention.Defend;
-    Debug.Log ("Defend Decision");
+    //Debug.Log ("Defend Decision");
   }
 
   //for button
@@ -86,20 +86,20 @@ public class UI_Manager : MonoBehaviour {
     AttackWhomInstructions.SetActive (true);
     MainPlayer.instance.MyCovertIntention = CovertIntention.Attack;
     GameManager.instance.MyGameState = Game_State.SelectWhom;
-    Debug.Log ("Attack Decision "+MainPlayer.instance.MyCovertIntention);
+    //Debug.Log ("Attack Decision "+MainPlayer.instance.MyCovertIntention);
   }
 
   //for button
   public void Swap_Decision(){
     MainPlayer.instance.MyCovertIntention = CovertIntention.Swap;
     GameManager.instance.MyGameState = Game_State.SelectMask;
-    Debug.Log ("Swap Decision");
+    //Debug.Log ("Swap Decision");
   }
 
   //for button
   public void Deliver_Decision(){
     MainPlayer.instance.MyCovertIntention = CovertIntention.Deliver;
     GameManager.instance.MyGameState = Game_State.SelectWhom;
-    Debug.Log ("Deliver Decision");
+    //Debug.Log ("Deliver Decision");
   }
 }

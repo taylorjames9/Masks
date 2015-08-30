@@ -16,6 +16,9 @@ public class MainPlayer : Individual {
 
   public IEnumerator OnMainPlayerTurn (int turnPos)
   {
+    //
+
+
     Debug.Log ("MainPlayer turn is running");
     OnMainPlayerDecisionPhase_01 ();
     Debug.Log ("after onDecision phase");
@@ -32,6 +35,7 @@ public class MainPlayer : Individual {
     //this function needs to be here...but 
     if (turnPos == Index) {
       Debug.Log ("MainPlayer OnMyTurn is running ");
+      GameManager.instance.MyGameState = Game_State.Flipping;
       StartCoroutine(OnMainPlayerTurn (turnPos));
     }
   }  
