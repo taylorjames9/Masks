@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour {
     CreateGroupOfPlayers ();
     PlotGroupInCircle (RandGroupNumInGame, 2.5f, new Vector2 (0, 0));
     DistributeMasksToGroup ();
-    //AdvanceTurn ();
+    UI_Manager.instance.UpdateMaskGUIForPlayer ();
   }
   
   public List<Individual> CreateGroupOfPlayers(){
@@ -105,41 +105,32 @@ public class GameManager : MonoBehaviour {
 
   }
 
-	public void AdvanceTurn(){
-
-
-	//TODO
-	//Moves the turn reticle to next individual
-    //Debug.Log ("Advance turn is running");
-    if (TurnPosition >= groupOfPlayersList.Count - 1) {
-      TurnPosition = 0;
-      GameManager.instance.MyGameState = Game_State.Flipping;
-    }
-     else {
-      TurnPosition++;
-      GameManager.instance.MyGameState = Game_State.NPCTurn;
-      //Debug.Log ("Advance turn to : " + TurnPosition + "+1");
-    }
-
+  public void ClearTheDead(){
     if (groupOfPlayersList.Count > 0) {
       List<Individual> deathMarchList = new List<Individual>();
       foreach (Individual ind in groupOfPlayersList) {
         ind.CheckPlayerState ();
         if (ind.MyPlayerState == Individual.PlayerState.Dead) {
-          /////groupOfPlayersList.Remove (ind);
-          //Destroy (ind);
-          /////ind.gameObject.SetActive(false);
           deathMarchList.Add(ind);
         }
       }
       if(deathMarchList.Count > 0){
         foreach(Individual deadman in deathMarchList){
           groupOfPlayersList.Remove(deadman);
+		  //deadman.Index = -1;
         }
-          deathMarchList.Clear();
-        }
+        deathMarchList.Clear();
       }
+    }
+  }
 
+	public void AdvanceTurn(){
+    ClearTheDead ();
+    TurnPosition++;
+    if (TurnPosition >= groupOfPlayersList.Count - 1) {
+      TurnPosition = 0;
+      GameManager.instance.MyGameState = Game_State.Flipping;
+    }
     OnTurnChange (TurnPosition);
 	}
 

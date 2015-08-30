@@ -98,7 +98,7 @@ public class Individual : MonoBehaviour {
 	public PlayerState CheckPlayerState(){
     switch (myMaskList.Count) {
     case 0:
-      MyPlayerState = PlayerState.Dead;
+      MyPlayerState = PlayerState.Bone;
       break;
     case 1:
       MyPlayerState = PlayerState.AtTrueChar;
@@ -184,21 +184,19 @@ public class Individual : MonoBehaviour {
 
 	public virtual void OnMyTurn(int turnPos){
     //Choose a random action. 
-    if (turnPos == Index && turnPos != 0 && MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead) {
-      GameManager.instance.MyGameState = Game_State.NPCTurn;
-      transform.FindChild ("thoughtbubble").gameObject.SetActive (true);
-      StartCoroutine (NPCTURN ());
-    } else {
-      Debug.Log ("Passed because I am dead or bone");
-      OnTurnComplete();
-    }
-  }
+    	if (turnPos == Index && turnPos != 0) {
+      		GameManager.instance.MyGameState = Game_State.NPCTurn;
+      		transform.FindChild ("thoughtbubble").gameObject.SetActive (true);
+      		StartCoroutine (NPCTURN ());
+    	} 
+  	}
 
   public virtual void ClearMyTurn (){
     if (Index == 0) {
       MyCovertIntention = CovertIntention.None;
       UI_Manager.instance.Q1_Prompt.SetActive(false);
       UI_Manager.instance.Q2_Prompt.SetActive(false);
+      UI_Manager.instance.SpecialInstructions.SetActive(false);
       //TODO Add some here to turn off Instruction plaque
     }
     GameManager.instance.MyGameState = Game_State.None;
@@ -213,48 +211,52 @@ public class Individual : MonoBehaviour {
 
   public IEnumerator NPCTURN(){
     if (MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead) {
-      yield return new WaitForSeconds (2.0f);
-      Debug.Log ("MY TURN MOFOS: " + Index);
-      int r = Random.Range (1, 100);
-      if (r < 20) {
-        PerformMyDecision ();
-        Debug.Log ("RIGHT AWAY I'M GOING TO PASS "+Index);
-      }
-      ;
-      if(myMaskList.Count > 0){
-      int m = Random.Range (0, myMaskList.Count - 1);
-      Mask myAction = myMaskList [m];
-      Debug.Log ("NpC "+Index+" intention to use NPC mask = "+myAction.MyMaskType.ToString());
-      switch (myAction.MyMaskType) {
-      case MaskType.Attack:
-        GameManager.instance.MyGameState = Game_State.SelectWhom;
-        int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
-        Individual vic = GameManager.instance.groupOfPlayersList [r_whom];
-        vic.TurnOnMyReticle ();
-        yield return new WaitForSeconds (1.5f);
-        PerformMyDecision (vic);
-        ClearMyTurn();
-        break;
-      case MaskType.Defend:
-        yield return new WaitForSeconds (1.5f);
-        PerformMyDecision ();
-        ClearMyTurn();
-        break;
-      case MaskType.Switch:
-        int r_swapMask = Random.Range (0, myMaskList.Count - 1);
-        Mask myOwnMaskToSwap = myMaskList [r_swapMask];
-        int r_swapVic = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
-        Individual vic_toSwap = GameManager.instance.groupOfPlayersList [r_swapVic];
-        yield return new WaitForSeconds (1.5f);
-        PerformMyDecision (myOwnMaskToSwap, vic_toSwap);
-        ClearMyTurn();
-        break;
-      default:
-          Debug.Log ("Mask type for an NPC turn seems to be unknown."+ Index);
-        break;
-      }
-      }
-    }
+			yield return new WaitForSeconds (2.0f);
+			Debug.Log ("MY TURN MOFOS: " + Index);
+			int r = Random.Range (1, 100);
+			if (r < 20) {
+				PerformMyDecision ();
+				Debug.Log ("RIGHT AWAY I'M GOING TO PASS " + Index);
+			}
+			;
+			if (myMaskList.Count > 0) {
+				int m = Random.Range (0, myMaskList.Count - 1);
+				Mask myAction = myMaskList [m];
+				Debug.Log ("NpC " + Index + " intention to use NPC mask = " + myAction.MyMaskType.ToString ());
+				switch (myAction.MyMaskType) {
+				case MaskType.Attack:
+					GameManager.instance.MyGameState = Game_State.SelectWhom;
+					int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
+					Individual vic = GameManager.instance.groupOfPlayersList [r_whom];
+					vic.TurnOnMyReticle ();
+					yield return new WaitForSeconds (1.5f);
+					PerformMyDecision (vic);
+					ClearMyTurn ();
+					break;
+				case MaskType.Defend:
+					yield return new WaitForSeconds (1.5f);
+					PerformMyDecision ();
+					ClearMyTurn ();
+					break;
+				case MaskType.Switch:
+					int r_swapMask = Random.Range (0, myMaskList.Count - 1);
+					Mask myOwnMaskToSwap = myMaskList [r_swapMask];
+					int r_swapVic = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
+					Individual vic_toSwap = GameManager.instance.groupOfPlayersList [r_swapVic];
+					yield return new WaitForSeconds (1.5f);
+					PerformMyDecision (myOwnMaskToSwap, vic_toSwap);
+					ClearMyTurn ();
+					break;
+				default:
+					Debug.Log ("Mask type for an NPC turn seems to be unknown." + Index);
+					break;
+				}
+			} 
+		} else {
+      		Debug.Log ("I'M DEAD OR BONE. PASS ON MY TURN.");
+	    	PerformMyDecision();
+        	ClearMyTurn();
+		}
   }
 
 
