@@ -205,6 +205,7 @@ public class Individual : MonoBehaviour {
     SwapWhat = null;
     SwapWhom = null;
     DeliverWhom = null;
+    UI_Manager.instance.UpdateMaskGUIForPlayer();
     OnTurnComplete();
     Debug.Log ("Cleared my turn for: " + Index);
   }

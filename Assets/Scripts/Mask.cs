@@ -67,6 +67,7 @@ public class Mask : MonoBehaviour {
       //Debug.Log ("MASK FLIES OFF");
       MaskAnimation();
       MyOwner.RemoveMask ();
+      UI_Manager.instance.UpdateMaskGUIForPlayer();
       break;
     case Game_State.SelectWhom:
       Debug.Log ("Select whom is active");
