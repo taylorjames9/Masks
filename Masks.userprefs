@@ -2,10 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/UI_Manager.cs">
     <Files>
-      <File FileName="Assets/Scripts/UI_Manager.cs" Line="89" Column="135" />
-      <File FileName="Assets/Scripts/Individual.cs" Line="192" Column="4" />
-      <File FileName="Assets/Scripts/GameManager.cs" Line="120" Column="7" />
-      <File FileName="Assets/Scripts/Mask.cs" Line="69" Column="29" />
+      <File FileName="Assets/Scripts/UI_Manager.cs" Line="53" Column="6" />
+      <File FileName="Assets/Scripts/Individual.cs" Line="208" Column="50" />
+      <File FileName="Assets/Scripts/GameManager.cs" Line="37" Column="4" />
+      <File FileName="Assets/Scripts/Mask.cs" Line="70" Column="52" />
       <File FileName="Assets/Scripts/MainPlayer.cs" Line="38" Column="62" />
       <File FileName="Assets/Scripts/SoundManager.cs" Line="7" Column="30" />
     </Files>

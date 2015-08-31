@@ -135,6 +135,8 @@ public class Individual : MonoBehaviour {
     } else {
       DisplayOnlyTopMask();
     }
+
+    UI_Manager.instance.UpdateMaskGUIForPlayer();
   }
 
 	// Update is called once per frame

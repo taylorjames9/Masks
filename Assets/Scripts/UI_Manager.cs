@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 public class UI_Manager : MonoBehaviour {
 
@@ -20,6 +21,8 @@ public class UI_Manager : MonoBehaviour {
   public Sprite attackSprite;
   public Sprite switchSprite;
   public Sprite defendSprite;
+
+  public List<Mask> _cloneOfMainPlayerMasks;
 
   private bool q1_done;
   public bool Q1_Done{get{ return q1_done; }set{q1_done = value;}}
@@ -46,27 +49,42 @@ public class UI_Manager : MonoBehaviour {
 
   public void UpdateMaskGUIForPlayer(){
    
-    List<Mask> _cloneOfMainPlayerMasks = new List<Mask> ();
+    //List<Mask> oldImages = GameObject.FindGameObjectWithTag ("MaskGUIArea").GetComponentsInChildren<Mask> ().ToList();
+
+    if (GameObject.FindGameObjectWithTag ("MaskGUIArea").transform.childCount > 0) {
+      List<Mask> oldImages = GameObject.FindGameObjectWithTag ("MaskGUIArea").GetComponentsInChildren<Mask> ().ToList();
+      foreach (Mask child in oldImages) {
+        Debug.Log ("Child name "+child.name);
+        Destroy(child.gameObject);
+      }
+    }
+
+    Debug.Log ("child count for maskGUI " + GameObject.FindGameObjectWithTag ("MaskGUIArea").transform.childCount);
+
+    
+    //List<Mask> _cloneOfMainPlayerMasks = new List<Mask> ();
+    _cloneOfMainPlayerMasks.Clear ();
+    Debug.Log ("Mask list Count "+MainPlayer.instance.myMaskList.Count);
     _cloneOfMainPlayerMasks.AddRange (MainPlayer.instance.myMaskList);
     _cloneOfMainPlayerMasks.Reverse ();
-    Debug.Log ("clone count" +_cloneOfMainPlayerMasks.Count);
-    Debug.Log ("orig count" +MainPlayer.instance.myMaskList.Count);
-
-
-    int i = 0;
-    foreach (Mask clone in _cloneOfMainPlayerMasks) {
-      Debug.Log ("Clone of masks +"+i+" "+clone.MyMaskType);
-      i++;
-    }
-    i = 0;
-    foreach (Mask orig in MainPlayer.instance.myMaskList) {
-      Debug.Log ("orig of masks +"+i+" "+orig.MyMaskType);
-      i++;
-    }
+//    Debug.Log ("clone count" +_cloneOfMainPlayerMasks.Count);
+//    Debug.Log ("orig count" +MainPlayer.instance.myMaskList.Count);
+//
+//
+//    int i = 0;
+//    foreach (Mask clone in _cloneOfMainPlayerMasks) {
+////      Debug.Log ("Clone of masks +"+i+" "+clone.MyMaskType);
+//      i++;
+//    }
+//    i = 0;
+//    foreach (Mask orig in MainPlayer.instance.myMaskList) {
+//      Debug.Log ("orig of masks +"+i+" "+orig.MyMaskType);
+//      i++;
+//    }
 
     foreach (Mask msk in _cloneOfMainPlayerMasks) {
       GameObject guiMask = Instantiate(protoGUiMask) as GameObject; 
-      guiMask.transform.SetParent(GameObject.FindGameObjectWithTag("MaskCUIArea").transform);
+      guiMask.transform.SetParent(GameObject.FindGameObjectWithTag("MaskGUIArea").transform);
       guiMask.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
       switch(msk.MyMaskType){
       case MaskType.Attack:
@@ -103,6 +121,7 @@ public class UI_Manager : MonoBehaviour {
 	void Start () {
     UpdateMaskNumberGUI ();
     UpdateTurnPositionGUI (GameManager.instance.TurnPosition);
+    _cloneOfMainPlayerMasks = new List<Mask> ();
 	}
 	
 	// Update is called once per frame
