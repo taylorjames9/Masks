@@ -83,6 +83,20 @@ public class Mask : MonoBehaviour {
     }
   }
 
+  public void Gui_MaskClick(){
+    if (GameManager.instance.MyGameState == Game_State.SelectMask) {
+      MainPlayer.instance.SetSelectMask(this);
+    }
+  }
+  
+  public void Turn_GUI_Recticle_On(){
+    GetComponent<Animator> ().enabled = true;
+  }
+  
+  public void Turn_GUI_Recticle_OFF(){
+    GetComponent<Animator> ().enabled = false;
+  }
+
   public void MaskAnimation(){
     maskAnim.enabled = true;
     Invoke ("DestroyMask", 1.0f);
