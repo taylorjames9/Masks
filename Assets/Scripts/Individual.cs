@@ -302,6 +302,10 @@ public class Individual : MonoBehaviour {
     
   }
 
+  public void SetSelectMask(Mask msk){
+    SwapWhat = msk;
+  }
+  
   public void SetSelectWhomSelection(Individual ind){
 
     AttackWhom = ind;
