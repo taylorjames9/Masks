@@ -9,6 +9,7 @@ public enum MaskType{None, Attack, Defend, Switch};
 
 public class Mask : MonoBehaviour {
   public Animator maskAnim;
+  public Animator maskReticleAnim;
   public  List<Sprite> myPossibleMaskImages;
 
   private Individual _myOwner; 
@@ -79,6 +80,22 @@ public class Mask : MonoBehaviour {
       break;
     }
   }
+
+  public void Gui_MaskClick(){
+    if (GameManager.instance.MyGameState == Game_State.SelectMask) {
+      MainPlayer.instance.SetSelectMask(this);
+    }
+  }
+
+  public void Turn_GUI_Recticle_On(){
+    GetComponent<Animator> ().enabled = true;
+  }
+
+  public void Turn_GUI_Recticle_OFF(){
+    GetComponent<Animator> ().enabled = false;
+  }
+
+
 
   public void MaskAnimation(){
     maskAnim.enabled = true;

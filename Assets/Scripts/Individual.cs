@@ -199,7 +199,6 @@ public class Individual : MonoBehaviour {
       UI_Manager.instance.Q1_Prompt.SetActive(false);
       UI_Manager.instance.Q2_Prompt.SetActive(false);
       UI_Manager.instance.SpecialInstructions.SetActive(false);
-      //TODO Add some here to turn off Instruction plaque
     }
     GameManager.instance.MyGameState = Game_State.None;
     transform.FindChild ("thoughtbubble").gameObject.SetActive (false);
@@ -308,6 +307,10 @@ public class Individual : MonoBehaviour {
     AttackWhom = ind;
     Debug.Log ("AttackWhom = " + AttackWhom);
     SwapWhom = ind;
+  }
+
+  public void SetSelectMask(Mask msk){
+    SwapWhat = msk;
   }
 
   public void ClearSelectWhomSelection(Individual ind){
