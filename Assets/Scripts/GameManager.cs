@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour {
   }
 
   private void DistributeMasksToGroup (){
+    Debug.Log ("Distribute masks to group");
     int _masksToHandout = RandMaskNumInGame;
 		while (_masksToHandout > 0) {
 			foreach (Individual indie in groupOfPlayersList) {
@@ -90,14 +91,14 @@ public class GameManager : MonoBehaviour {
           if(_masksToHandout > 0){
 					  indie.ApplyRandomMask ();
 					  _masksToHandout--;
-            Debug.Log ("masks to hand out = "+_masksToHandout);
+//            Debug.Log ("masks to hand out = "+_masksToHandout);
           } else {
-            return;
+            continue;
           }
 				} 
 			}
 		}
-    //Debug.Log ("out of WHILE code");
+    Debug.Log ("out of WHILE code");
     foreach (Individual ind in groupOfPlayersList) {
       ind.DisplayOnlyTopMask ();
     }
