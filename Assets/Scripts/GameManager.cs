@@ -41,9 +41,9 @@ public class GameManager : MonoBehaviour {
   void Start () {
     MyGameState = Game_State.Flipping;
     RandGroupNumInGame = Random.Range (5, 9);
-//	  Debug.Log ("RandGroup num = "+RandGroupNumInGame);
+	  Debug.Log ("RandGroup num = "+RandGroupNumInGame);
     RandMaskNumInGame = Random.Range (RandGroupNumInGame*3, RandGroupNumInGame * 5);
-	//  Debug.Log ("RandMask num = "+RandMaskNumInGame);
+	  Debug.Log ("RandMask num = "+RandMaskNumInGame);
     CreateGroupOfPlayers ();
     PlotGroupInCircle (RandGroupNumInGame, 2.5f, new Vector2 (0, 0));
     DistributeMasksToGroup ();
@@ -87,11 +87,14 @@ public class GameManager : MonoBehaviour {
 		while (_masksToHandout > 0) {
 			foreach (Individual indie in groupOfPlayersList) {
 				if (Random.value > 0.5f) {
-					indie.ApplyRandomMask ();
-					_masksToHandout--;
-				} else {
-					continue;
-				}
+          if(_masksToHandout > 0){
+					  indie.ApplyRandomMask ();
+					  _masksToHandout--;
+            Debug.Log ("masks to hand out = "+_masksToHandout);
+          } else {
+            return;
+          }
+				} 
 			}
 		}
     //Debug.Log ("out of WHILE code");
@@ -101,8 +104,8 @@ public class GameManager : MonoBehaviour {
 	}
 
   public void OneLessMaskInGame(){
-    RandMaskNumInGame--;
-
+    if(RandMaskNumInGame > 0)
+      RandMaskNumInGame--;
   }
 
   public void ClearTheDead(){

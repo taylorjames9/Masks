@@ -180,7 +180,6 @@ public class Individual : MonoBehaviour {
       default:
         break;
       }
-      //OnTurnComplete();
     }
 	}
 

@@ -59,28 +59,14 @@ public class UI_Manager : MonoBehaviour {
       }
     }
 
-    Debug.Log ("child count for maskGUI " + GameObject.FindGameObjectWithTag ("MaskGUIArea").transform.childCount);
+//    Debug.Log ("child count for maskGUI " + GameObject.FindGameObjectWithTag ("MaskGUIArea").transform.childCount);
 
     
     //List<Mask> _cloneOfMainPlayerMasks = new List<Mask> ();
     _cloneOfMainPlayerMasks.Clear ();
-    Debug.Log ("Mask list Count "+MainPlayer.instance.myMaskList.Count);
+//    Debug.Log ("Mask list Count "+MainPlayer.instance.myMaskList.Count);
     _cloneOfMainPlayerMasks.AddRange (MainPlayer.instance.myMaskList);
     _cloneOfMainPlayerMasks.Reverse ();
-//    Debug.Log ("clone count" +_cloneOfMainPlayerMasks.Count);
-//    Debug.Log ("orig count" +MainPlayer.instance.myMaskList.Count);
-//
-//
-//    int i = 0;
-//    foreach (Mask clone in _cloneOfMainPlayerMasks) {
-////      Debug.Log ("Clone of masks +"+i+" "+clone.MyMaskType);
-//      i++;
-//    }
-//    i = 0;
-//    foreach (Mask orig in MainPlayer.instance.myMaskList) {
-//      Debug.Log ("orig of masks +"+i+" "+orig.MyMaskType);
-//      i++;
-//    }
 
     foreach (Mask msk in _cloneOfMainPlayerMasks) {
       GameObject guiMask = Instantiate(protoGUiMask) as GameObject; 
