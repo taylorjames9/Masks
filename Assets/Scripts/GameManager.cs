@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour {
 	public void AdvanceTurn(){
     ClearTheDead ();
     TurnPosition++;
-    if (TurnPosition >= groupOfPlayersList.Count - 1) {
+    if (TurnPosition > groupOfPlayersList.Count - 1) {
       TurnPosition = 0;
       GameManager.instance.MyGameState = Game_State.Flipping;
     }
