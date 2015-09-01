@@ -59,12 +59,7 @@ public class UI_Manager : MonoBehaviour {
       }
     }
 
-//    Debug.Log ("child count for maskGUI " + GameObject.FindGameObjectWithTag ("MaskGUIArea").transform.childCount);
-
-    
-    //List<Mask> _cloneOfMainPlayerMasks = new List<Mask> ();
     _cloneOfMainPlayerMasks.Clear ();
-//    Debug.Log ("Mask list Count "+MainPlayer.instance.myMaskList.Count);
     _cloneOfMainPlayerMasks.AddRange (MainPlayer.instance.myMaskList);
     _cloneOfMainPlayerMasks.Reverse ();
 
@@ -72,6 +67,7 @@ public class UI_Manager : MonoBehaviour {
       GameObject guiMask = Instantiate(protoGUiMask) as GameObject; 
       guiMask.transform.SetParent(GameObject.FindGameObjectWithTag("MaskGUIArea").transform);
       guiMask.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
+      guiMask.GetComponent<Mask>().MaskInGui = true;
       switch(msk.MyMaskType){
       case MaskType.Attack:
         guiMask.GetComponent<Image>().sprite = attackSprite;

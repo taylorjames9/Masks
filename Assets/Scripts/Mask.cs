@@ -22,6 +22,9 @@ public class Mask : MonoBehaviour {
 
   public MaskState MyMaskState {get { return _myMaskState; } set { _myMaskState = value;}}
   public MaskType MyMaskType{ get { return _myMaskType; } set { _myMaskType = value;}}
+
+  private bool maskInGui;
+  public bool MaskInGui{ get { return maskInGui; } set { maskInGui = value; } }
   
   public void InitializeRandomMask(){
     MyMaskState = MaskState.Alive;
