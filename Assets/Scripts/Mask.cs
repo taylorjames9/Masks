@@ -90,11 +90,15 @@ public class Mask : MonoBehaviour {
   }
   
   public void Turn_GUI_Recticle_On(){
-    GetComponent<Animator> ().enabled = true;
+    Debug.Log ("Turn on my reticle proto GUI");
+    GetComponentInChildren<Animator> ().enabled = true;
   }
   
   public void Turn_GUI_Recticle_OFF(){
-    GetComponent<Animator> ().enabled = false;
+    //GetComponent<Animator> ().enabled = false;
+    GetComponentInChildren<Animator> ().enabled = false;
+    Debug.Log ("Turn on my reticle proto GUI");
+
   }
 
   public void MaskAnimation(){
