@@ -22,7 +22,7 @@ public class UI_Manager : MonoBehaviour {
   public Sprite switchSprite;
   public Sprite defendSprite;
 
-  public List<Mask> _cloneOfMainPlayerMasks;
+  public List<Mask> CloneOfMainPlayerMasks;
 
   private bool q1_done;
   public bool Q1_Done{get{ return q1_done; }set{q1_done = value;}}
@@ -59,12 +59,16 @@ public class UI_Manager : MonoBehaviour {
       }
     }
 
-    _cloneOfMainPlayerMasks.Clear ();
-    _cloneOfMainPlayerMasks.AddRange (MainPlayer.instance.myMaskList);
-    _cloneOfMainPlayerMasks.Reverse ();
+    CloneOfMainPlayerMasks.Clear ();
+    CloneOfMainPlayerMasks.AddRange (MainPlayer.instance.myMaskList);
+    CloneOfMainPlayerMasks.Reverse ();
+    int count = CloneOfMainPlayerMasks.Count -1;
+    foreach (Mask msk in CloneOfMainPlayerMasks) {
 
-    foreach (Mask msk in _cloneOfMainPlayerMasks) {
       GameObject guiMask = Instantiate(protoGUiMask) as GameObject; 
+      guiMask.GetComponent<Mask>().gui_Mask_INDEX = count;
+      count--;
+      Debug.Log ("gui Count Indexing: "+count);
       guiMask.transform.SetParent(GameObject.FindGameObjectWithTag("MaskGUIArea").transform);
       guiMask.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
       guiMask.GetComponent<Mask>().MaskInGui = true;
@@ -83,6 +87,11 @@ public class UI_Manager : MonoBehaviour {
         break;
       }
     }
+    //CloneOfMainPlayerMasks.Reverse ();
+  }
+
+  public List<Mask> ReturnMainPlayerGUIMaskClone(List<Mask> msks){
+    return msks;
   }
 
 
@@ -103,7 +112,7 @@ public class UI_Manager : MonoBehaviour {
 	void Start () {
     UpdateMaskNumberGUI ();
     UpdateTurnPositionGUI (GameManager.instance.TurnPosition);
-    _cloneOfMainPlayerMasks = new List<Mask> ();
+    CloneOfMainPlayerMasks = new List<Mask> ();
 	}
 	
 	// Update is called once per frame

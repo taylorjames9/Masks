@@ -20,6 +20,7 @@ public class MainPlayer : Individual {
 
 
     Debug.Log ("MainPlayer turn is running");
+    transform.FindChild ("thoughtbubble").gameObject.SetActive (true);
     OnMainPlayerDecisionPhase_01 ();
     Debug.Log ("after onDecision phase");
     yield return 0;

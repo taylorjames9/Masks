@@ -91,6 +91,7 @@ public class Individual : MonoBehaviour {
       return myMaskList [myMaskList.Count - 1];
     } else {
       myMaskImage.sprite = skull;
+      GetComponent<Image>().color = new Color(GetComponent<Image>().color.r,GetComponent<Image>().color.g,GetComponent<Image>().color.b, 1.0f);
       return null;
     }
   }
@@ -137,6 +138,10 @@ public class Individual : MonoBehaviour {
     }
 
     UI_Manager.instance.UpdateMaskGUIForPlayer();
+  }
+
+  public void RemoveMask(Mask msk){
+
   }
 
 	// Update is called once per frame
@@ -209,6 +214,12 @@ public class Individual : MonoBehaviour {
     UI_Manager.instance.UpdateMaskGUIForPlayer();
     OnTurnComplete();
     Debug.Log ("Cleared my turn for: " + Index);
+
+    foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
+      ind.CheckPlayerState();
+      ind.DisplayOnlyTopMask();
+    }
+
   }
 
   public IEnumerator NPCTURN(){
@@ -276,22 +287,39 @@ public class Individual : MonoBehaviour {
   //this method signature means swap
   public void PerformMyDecision(Mask myMaskToSwap, Individual swapW){
     if (myMaskList.Count > 0 && swapW.myMaskList.Count > 0) {
-      Debug.Log ("Performing a swap decision THIS IS NULL RIGHT NOW. "+Index);
-//      int myRand = Random.Range (0, myMaskList.Count - 1);
-//      int theirRand = Random.Range (0, swapW.myMaskList.Count - 1);
-//      Mask mySwapMask = myMaskList [myRand];
-//      Mask theirSwapMask = swapW.myMaskList [theirRand];
-//
-//      myMaskList.Insert (myRand, theirSwapMask);
-//      theirSwapMask.GetComponent<RectTransform>().localPosition = transform.GetComponent<RectTransform>().localPosition;
-//      swapW.myMaskList.Insert (theirRand, mySwapMask);
-//      myMaskToSwap.GetComponent<RectTransform>().localPosition = swapW.transform.GetComponent<RectTransform>().localPosition;
-//      myMaskList.Remove(mySwapMask);
-//      swapW.myMaskList.Remove(theirSwapMask);
-//      DisplayOnlyTopMask ();
-//      swapW.DisplayOnlyTopMask ();
+      Debug.Log ("Performing a swap decision. "+Index);
+      int myRand = Random.Range (0, myMaskList.Count);
+      int theirRand = Random.Range (0, swapW.myMaskList.Count);
+
+      //Mask mySwapMask = myMaskList [myRand];
+      //Mask theirSwapMask = swapW.myMaskList [theirRand];
+      Debug.Log ("Swap on turn position = "+ GameManager.instance.TurnPosition);
+
+      if(GameManager.instance.TurnPosition == 0){
+        Debug.Log ("Swap on turn position = "+ GameManager.instance.TurnPosition);
+        //mySwapMask = myMaskToSwap;
+        myRand = myMaskList.IndexOf(myMaskToSwap);
+      } 
+      Debug.Log ("My Rand to swap is: "+myRand);
+      myMaskList.Insert (myRand, swapW.myMaskList [theirRand]);
+
+      myMaskToSwap.gameObject.transform.SetParent(swapW.transform);
+      //GetComponent<RectTransform>().localPosition = swapW.transform.GetComponent<RectTransform>().localPosition;
+      /////////theirSwapMask.GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
+
+      swapW.myMaskList.Insert (theirRand, myMaskToSwap);
+      swapW.myMaskList [theirRand].gameObject.transform.SetParent(myMaskToSwap.MyOwner.transform);
+      Debug.Break();
+      ////////theirSwapMask.GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
+      //GetComponent<RectTransform>().localPosition = swapW.transform.GetComponent<RectTransform>().localPosition;
+      ////////myMaskList.RemoveAt(myRand+1);  (myMaskToSwap);
+      ////////swapW.myMaskList.Remove(swapW.myMaskList [theirRand+1]);
+      CheckPlayerState ();
+      swapW.CheckPlayerState();
+      DisplayOnlyTopMask ();
+      swapW.DisplayOnlyTopMask ();
     } else {
-      Debug.Log ("Passing on a swap Decision because SOMEONE DOES HAVE ENOUGH MASKS. "+Index);
+      Debug.Log ("Passing on a swap Decision because SOMEONE DOES NOT HAVE ENOUGH MASKS. "+Index);
       PerformMyDecision();
     }
 
@@ -311,6 +339,7 @@ public class Individual : MonoBehaviour {
     AttackWhom = ind;
     Debug.Log ("AttackWhom = " + AttackWhom);
     SwapWhom = ind;
+    ind.TurnOffMyReticle ();
   }
 
   public void ClearSelectWhomSelection(Individual ind){

@@ -25,6 +25,8 @@ public class Mask : MonoBehaviour {
 
   private bool maskInGui;
   public bool MaskInGui{ get { return maskInGui; } set { maskInGui = value; } }
+
+  public int gui_Mask_INDEX;
   
   public void InitializeRandomMask(){
     MyMaskState = MaskState.Alive;
@@ -85,20 +87,32 @@ public class Mask : MonoBehaviour {
 
   public void Gui_MaskClick(){
     if (GameManager.instance.MyGameState == Game_State.SelectMask) {
-      MainPlayer.instance.SetSelectMask(this);
+      List<Mask> clone_mskList = UI_Manager.instance.CloneOfMainPlayerMasks;
+      clone_mskList.Reverse();
+      Debug.Log ("this index of the mask I just clicked on is : "+this.gui_Mask_INDEX);
+      MainPlayer.instance.SetSelectMask(MainPlayer.instance.myMaskList[this.gui_Mask_INDEX]);
+      GameManager.instance.MyGameState = Game_State.SelectWhom;
+      transform.FindChild ("gui_ret").gameObject.SetActive (false);
     }
   }
   
   public void Turn_GUI_Recticle_On(){
-    Debug.Log ("Turn on my reticle proto GUI");
-    GetComponentInChildren<Animator> ().enabled = true;
+    if (GameManager.instance.MyGameState == Game_State.SelectMask) {
+      Debug.Log ("Turn on my reticle proto GUI");
+      transform.FindChild ("gui_ret").gameObject.SetActive (true);
+      GetComponentInChildren<Animator> ().enabled = true;
+    }
   }
   
   public void Turn_GUI_Recticle_OFF(){
     //GetComponent<Animator> ().enabled = false;
-    GetComponentInChildren<Animator> ().enabled = false;
-    Debug.Log ("Turn on my reticle proto GUI");
+    if (GameManager.instance.MyGameState == Game_State.SelectMask) {
+      GetComponentInChildren<Animator> ().enabled = false;
+      transform.FindChild ("gui_ret").gameObject.SetActive (false);
 
+      Debug.Log ("Turn on my reticle proto GUI");
+
+    }
   }
 
   public void MaskAnimation(){
@@ -116,7 +130,7 @@ public class Mask : MonoBehaviour {
   }
 
   void Start(){
-
+    //gui_Mask_INDEX = -5;
   }
   
   // Update is called once per frame
