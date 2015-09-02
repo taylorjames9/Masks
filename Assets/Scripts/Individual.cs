@@ -70,7 +70,11 @@ public class Individual : MonoBehaviour {
 	}
 
   public bool IsItMyTurn(){
-    return GameManager.instance.TurnPosition == Index? true : false; 
+    if (GameManager.instance.TurnPosition == Index) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void DisplayOnlyTopMask(){
@@ -295,6 +299,10 @@ public class Individual : MonoBehaviour {
       //Mask theirSwapMask = swapW.myMaskList [theirRand];
       Debug.Log ("Swap on turn position = "+ GameManager.instance.TurnPosition);
 
+      if(swapW.Index == Index){
+        Debug.Log ("I'm swapping WITH MYSELF!!");
+      }
+
       if(GameManager.instance.TurnPosition == 0){
         Debug.Log ("Swap on turn position = "+ GameManager.instance.TurnPosition);
         //mySwapMask = myMaskToSwap;
@@ -302,13 +310,20 @@ public class Individual : MonoBehaviour {
       } 
       Debug.Log ("My Rand to swap is: "+myRand);
       myMaskList.Insert (myRand, swapW.myMaskList [theirRand]);
+      Debug.Log ("Swapping with : "+swapW.Index);
+      Debug.Log("my mask type to swap = "+myMaskToSwap.MyMaskType);
+      Debug.Log ("Other mask position in stack = "+theirRand);
+      Debug.Log ("Other mask type = "+swapW.myMaskList [theirRand].MyMaskType);
 
+      
       myMaskToSwap.gameObject.transform.SetParent(swapW.transform);
       //GetComponent<RectTransform>().localPosition = swapW.transform.GetComponent<RectTransform>().localPosition;
       /////////theirSwapMask.GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
 
       swapW.myMaskList.Insert (theirRand, myMaskToSwap);
       swapW.myMaskList [theirRand].gameObject.transform.SetParent(myMaskToSwap.MyOwner.transform);
+      myMaskList.Remove (myMaskToSwap);
+      swapW.myMaskList.Remove(swapW.myMaskList [theirRand]);
       Debug.Break();
       ////////theirSwapMask.GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
       //GetComponent<RectTransform>().localPosition = swapW.transform.GetComponent<RectTransform>().localPosition;
