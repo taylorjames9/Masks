@@ -309,26 +309,38 @@ public class Individual : MonoBehaviour {
         myRand = myMaskList.IndexOf(myMaskToSwap);
       } 
       Debug.Log ("My Rand to swap is: "+myRand);
-      myMaskList.Insert (myRand, swapW.myMaskList [theirRand]);
+
       Debug.Log ("Swapping with : "+swapW.Index);
       Debug.Log("my mask type to swap = "+myMaskToSwap.MyMaskType);
       Debug.Log ("Other mask position in stack = "+theirRand);
       Debug.Log ("Other mask type = "+swapW.myMaskList [theirRand].MyMaskType);
+      //insert into list
+      myMaskList.Insert (myRand, swapW.myMaskList [theirRand]);
+      //Set Parent of new mask in my list to me. 
+      myMaskList[myRand].gameObject.transform.SetParent(swapW.transform);
+      //move transform to mainplayer to original swapper transform
+      myMaskList[myRand].GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
 
-      
+      //trying something new, remove their mask before inserting a new one
+      swapW.myMaskList.Remove(swapW.myMaskList [theirRand]);
+      //insert myMask into other player list
+      swapW.myMaskList.Insert(theirRand, myMaskToSwap);
+      //set parent of original swapper mask to other position
       myMaskToSwap.gameObject.transform.SetParent(swapW.transform);
+      //move oriingal mask to swap to SwapW position
+      myMaskToSwap.gameObject.GetComponent<RectTransform>().localPosition = swapW.gameObject.GetComponent<RectTransform>().localPosition;
+
+
+      //myMaskToSwap.gameObject.transform.SetParent(swapW.transform);
       //GetComponent<RectTransform>().localPosition = swapW.transform.GetComponent<RectTransform>().localPosition;
       /////////theirSwapMask.GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
 
-      swapW.myMaskList.Insert (theirRand, myMaskToSwap);
-      swapW.myMaskList [theirRand].gameObject.transform.SetParent(myMaskToSwap.MyOwner.transform);
+      //swapW.myMaskList [theirRand].GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
+      //swapW.myMaskList.Insert (theirRand, myMaskToSwap);
+      //swapW.myMaskList [theirRand].gameObject.transform.SetParent(myMaskToSwap.MyOwner.transform);
       myMaskList.Remove (myMaskToSwap);
-      swapW.myMaskList.Remove(swapW.myMaskList [theirRand]);
+
       Debug.Break();
-      ////////theirSwapMask.GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
-      //GetComponent<RectTransform>().localPosition = swapW.transform.GetComponent<RectTransform>().localPosition;
-      ////////myMaskList.RemoveAt(myRand+1);  (myMaskToSwap);
-      ////////swapW.myMaskList.Remove(swapW.myMaskList [theirRand+1]);
       CheckPlayerState ();
       swapW.CheckPlayerState();
       DisplayOnlyTopMask ();
