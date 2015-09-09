@@ -54,7 +54,7 @@ public class UI_Manager : MonoBehaviour {
     if (GameObject.FindGameObjectWithTag ("MaskGUIArea").transform.childCount > 0) {
       List<Mask> oldImages = GameObject.FindGameObjectWithTag ("MaskGUIArea").GetComponentsInChildren<Mask> ().ToList();
       foreach (Mask child in oldImages) {
-        Debug.Log ("Child name "+child.name);
+//        Debug.Log ("Child name "+child.name);
         Destroy(child.gameObject);
       }
     }
