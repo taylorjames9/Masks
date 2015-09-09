@@ -68,7 +68,7 @@ public class UI_Manager : MonoBehaviour {
       GameObject guiMask = Instantiate(protoGUiMask) as GameObject; 
       guiMask.GetComponent<Mask>().gui_Mask_INDEX = count;
       count--;
-      Debug.Log ("gui Count Indexing: "+count);
+      ////////Debug.Log ("gui Count Indexing: "+count);
       guiMask.transform.SetParent(GameObject.FindGameObjectWithTag("MaskGUIArea").transform);
       guiMask.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
       guiMask.GetComponent<Mask>().MaskInGui = true;
