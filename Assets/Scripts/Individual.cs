@@ -161,6 +161,8 @@ public class Individual : MonoBehaviour
 
   public void RemoveMask ()
   {
+    ClearExcessMasks ();
+
     if (myMaskList.Count > 0) {
       if (GameManager.instance.MyGameState == Game_State.Flipping) {
         SoundManager.instance.PlaySingle (Swish);
@@ -171,15 +173,37 @@ public class Individual : MonoBehaviour
       DisplayOnlyTopMask ();
       OnMaskRemoval ();
     } else {
+      CheckPlayerState ();
       DisplayOnlyTopMask ();
     }
-
+    ClearExcessMasks ();
     UI_Manager.instance.UpdateMaskGUIForPlayer ();
+
   }
 
   public void RemoveMask (Mask msk)
   {
 
+  }
+
+  public void ClearExcessMasks(){
+    List<Mask> temp_mask = new List<Mask> ();
+    foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
+      foreach (Mask msk in ind.myMaskList) {
+        if (msk == null) {
+          //ind.myMaskList.Remove (msk);
+          temp_mask.Add (msk);
+        }
+      }
+    }
+    foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
+      if(temp_mask.Count > 0){
+        foreach(Mask msk in temp_mask){
+          ind.myMaskList.Remove(msk);
+        }
+      }
+    }
+    temp_mask.Clear ();
   }
 
   // Update is called once per frame
@@ -242,14 +266,15 @@ public class Individual : MonoBehaviour
 
   public virtual void ClearMyTurn ()
   {
-    foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
-      foreach (Mask msk in ind.myMaskList) {
-        if (msk == null) {
-          ind.myMaskList.Remove (msk);
-        }
-      }
-    }
+//    foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
+//      foreach (Mask msk in ind.myMaskList) {
+//        if (msk == null) {
+//          ind.myMaskList.Remove (msk);
+//        }
+//      }
+//    }
 
+    ClearExcessMasks ();
 
     if (Index == 0) {
       MyCovertIntention = CovertIntention.None;
@@ -278,6 +303,9 @@ public class Individual : MonoBehaviour
       ind.TurnOffMyReticle ();
       ind.CheckPlayerState ();
       ind.DisplayOnlyTopMask ();
+      foreach(Mask msk in ind.myMaskList){
+        msk.MyOwner = msk.gameObject.GetComponentInParent<Individual>();
+      }
     }
 
   }

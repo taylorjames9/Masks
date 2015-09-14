@@ -38,9 +38,6 @@ public class MainPlayer : Individual {
     OnMainPlayerDecisionPhase_01 ();
     Debug.Log ("after onDecision phase");
     yield return 0;
-    //////////yield return StartCoroutine (UI_Manager.instance.WaitingForPlayerInput_Q1 ());
-	  /////////Debug.Log ("Back to Main player after a brief break sponsored by coroutines "+Time.time);
-    //tell UI Manager to show Phase2 prompt
 
   }
 

@@ -69,17 +69,15 @@ public class Mask : MonoBehaviour {
 
   public void MaskClick(){
 
-    /*foreach (Mask msk in MyOwner.myMaskList) {
-      if(msk == null){
-        MyOwner.myMaskList.Remove(msk);
-      }
-    }*/
+    MyOwner.ClearExcessMasks ();
 
     switch (GameManager.instance.MyGameState) {
     case Game_State.Flipping:
       if(MyOwner.myMaskList.Count > 0){
-        MaskAnimation();
+        //MaskAnimation();
         MyOwner.RemoveMask ();
+        //MyOwner.CheckPlayerState();
+        //MyOwner.DisplayOnlyTopMask();
       }
       break;
     case Game_State.SelectWhom:
