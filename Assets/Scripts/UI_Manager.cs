@@ -29,6 +29,10 @@ public class UI_Manager : MonoBehaviour {
 
   public static UI_Manager instance{ get; set; }
 
+  public Button attackButton;
+  public Button swapButton;
+  //public Button defendButton;
+
   void OnEnable(){
     instance = this;
     //subscribe to mask removal event
@@ -113,6 +117,10 @@ public class UI_Manager : MonoBehaviour {
     UpdateMaskNumberGUI ();
     UpdateTurnPositionGUI (GameManager.instance.TurnPosition);
     CloneOfMainPlayerMasks = new List<Mask> ();
+    attackButton.interactable = false;
+    attackButton.image.color = Color.red;
+    swapButton.interactable = false;
+    swapButton.image.color = Color.red;
 	}
 	
 	// Update is called once per frame
@@ -143,22 +151,25 @@ public class UI_Manager : MonoBehaviour {
 
   //for button
   public void Attack_Decision(){
-	SpecialInstructions.SetActive (true);
-	SpecialInstructions.GetComponentInChildren<Text>().text = "Hover reticle and select target. " +
-    "Attacking a character will cause them to lose one mask if they do not have at least one defensive mask in their stack of masks. ";
-    MainPlayer.instance.MyCovertIntention = CovertIntention.Attack;
-    GameManager.instance.MyGameState = Game_State.SelectWhom;
-    //Debug.Log ("Attack Decision "+MainPlayer.instance.MyCovertIntention);
+    if (MainPlayer.instance.AttackCapability) {
+      SpecialInstructions.SetActive (true);
+      SpecialInstructions.GetComponentInChildren<Text> ().text = "Hover reticle and select target. " +
+        "Attacking a character will cause them to lose one mask if they do not have at least one defensive mask in their stack of masks. ";
+      MainPlayer.instance.MyCovertIntention = CovertIntention.Attack;
+      GameManager.instance.MyGameState = Game_State.SelectWhom;
+      //Debug.Log ("Attack Decision "+MainPlayer.instance.MyCovertIntention);
+    } 
   }
 
   //for button
   public void Swap_Decision(){
-    SpecialInstructions.SetActive (true);
-    SpecialInstructions.GetComponentInChildren<Text>().text = "Choose a mask in your inventory that you would like to swap out. Then choose another" +
-      "player to swap with.";
-    MainPlayer.instance.MyCovertIntention = CovertIntention.Swap;
-    GameManager.instance.MyGameState = Game_State.SelectMask;
-    //Debug.Log ("Swap Decision");
+    if (MainPlayer.instance.SwapCapability) {
+      SpecialInstructions.SetActive (true);
+      SpecialInstructions.GetComponentInChildren<Text> ().text = "Choose a mask in your inventory that you would like to swap out. Then choose another" +
+        "player to swap with.";
+      MainPlayer.instance.MyCovertIntention = CovertIntention.Swap;
+      GameManager.instance.MyGameState = Game_State.SelectMask;
+    } 
   }
 
   //for button

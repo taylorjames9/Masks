@@ -108,6 +108,7 @@ public class Individual : MonoBehaviour
       return;
     } else {
       foreach (Mask ms in myMaskList) {
+        if(ms != null)
         ms.ChangeAlphaColor (0.0f);
       }
       CheckTopMask ().ChangeAlphaColor (1.0f);
@@ -117,6 +118,10 @@ public class Individual : MonoBehaviour
   public Mask CheckTopMask ()
   {
     if (myMaskList.Count > 0) {
+      //if(myMaskList [myMaskList.Count - 1] == null){
+
+      //}
+
       return myMaskList [myMaskList.Count - 1];
     } else {
       myMaskImage.sprite = skull;
@@ -182,7 +187,8 @@ public class Individual : MonoBehaviour
   {
 //    Debug.Log ("Is it my turn ?" + IsItMyTurn ()+" index "+ Index );
     if (IsItMyTurn () && Index == 0) {
-      Debug.Log ("Main Player Update running covert intention " + MyCovertIntention);
+      //if(MyCovertIntention == null)
+      ////////////Debug.Log ("Main Player Update running covert intention " + MyCovertIntention);
       //if NPC.......Generate random covert intention
       switch (MyCovertIntention) {
       case CovertIntention.Defend:
@@ -225,20 +231,37 @@ public class Individual : MonoBehaviour
   public virtual void OnMyTurn (int turnPos)
   {
     //Choose a random action. 
-    if (turnPos == Index && turnPos != 0) {
+    if (turnPos == Index && turnPos != 0 /*&& MyPlayerState != PlayerState.Dead && MyPlayerState != PlayerState.Bone*/) {
       GameManager.instance.MyGameState = Game_State.NPCTurn;
       transform.FindChild ("thoughtbubble").gameObject.SetActive (true);
       StartCoroutine (NPCTURN ());
-    } 
+    } else {
+      //ClearMyTurn();
+    }
   }
 
   public virtual void ClearMyTurn ()
   {
+    foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
+      foreach (Mask msk in ind.myMaskList) {
+        if (msk == null) {
+          ind.myMaskList.Remove (msk);
+        }
+      }
+    }
+
+
     if (Index == 0) {
       MyCovertIntention = CovertIntention.None;
       UI_Manager.instance.Q1_Prompt.SetActive (false);
       UI_Manager.instance.Q2_Prompt.SetActive (false);
       UI_Manager.instance.SpecialInstructions.SetActive (false);
+      MainPlayer.instance.AttackCapability = false;
+      MainPlayer.instance.SwapCapability = false;
+      UI_Manager.instance.attackButton.interactable = false;
+      UI_Manager.instance.attackButton.image.color = Color.red;
+      UI_Manager.instance.swapButton.interactable = false;
+      UI_Manager.instance.swapButton.image.color = Color.red;
       //TODO Add some here to turn off Instruction plaque
     }
     GameManager.instance.MyGameState = Game_State.None;
@@ -327,7 +350,7 @@ public class Individual : MonoBehaviour
   //this method signature means swap
   public void PerformMyDecision (Mask myMaskToSwap, Individual swapW)
   {
-    if (myMaskList.Count > 0 && swapW.myMaskList.Count > 0) {
+    if (myMaskList.Count > 0 && swapW.myMaskList.Count > 0 && myMaskToSwap.MyOwner.Index != swapW.Index) {
       Debug.Log ("Performing a swap decision. " + Index);
       int myRand = Random.Range (0, myMaskList.Count);
       int theirRand = Random.Range (0, swapW.myMaskList.Count);
@@ -375,41 +398,6 @@ public class Individual : MonoBehaviour
       Debug.Log ("AFTER REMOVE myMaskList COUNT: "+myMaskList.Count);
       Debug.Log ("AFTER REMOVE theirMaskList COUNT : "+swapW.myMaskList.Count);
 
-      foreach(Mask msk in myMaskList){
-        Debug.Log (" my Mask List after REMOVE "+ msk.MyMaskType);
-        switch(msk.MyMaskType){
-        case MaskType.Attack:
-          msk.GetComponent<Image>().sprite = msk.myPossibleMaskImages[0];
-          break;
-        case MaskType.Defend:
-          msk.GetComponent<Image>().sprite = msk.myPossibleMaskImages[1];
-          break;
-        case MaskType.Switch:
-          msk.GetComponent<Image>().sprite = msk.myPossibleMaskImages[2];
-          
-          break;
-        default:
-          break;
-        }
-      }
-      foreach(Mask msk in swapW.myMaskList){
-        Debug.Log (" their mask list after REMOVE " + msk.MyMaskType);
-        //tell me everything in their list
-        switch(msk.MyMaskType){
-        case MaskType.Attack:
-          msk.GetComponent<Image>().sprite = msk.myPossibleMaskImages[0];
-          break;
-        case MaskType.Defend:
-          msk.GetComponent<Image>().sprite = msk.myPossibleMaskImages[1];
-          break;
-        case MaskType.Switch:
-          msk.GetComponent<Image>().sprite = msk.myPossibleMaskImages[2];
-          
-          break;
-        default:
-          break;
-        }
-      }
 
       //Debug.Log ("the thing that is really getting put into the other list : "+myPotentialMaskToSwap.MyMaskType);
       //Debug.Log ("the thing that is really getting put into the my list : "+theirPotentialMaskToSwap.MyMaskType);
@@ -464,75 +452,48 @@ public class Individual : MonoBehaviour
         }
       }
 
-      //tell me everthyhing in their list
+
+
+      //Set the new parent
+      theirPotentialMaskToSwap.gameObject.transform.SetParent (orig_parent.transform, false);
+      theirPotentialMaskToSwap.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0,0,0);
+      theirPotentialMaskToSwap.MyOwner = orig_parent;
+
+      Debug.Log ("*******Their mask to swap OWNER= "+theirPotentialMaskToSwap.MyOwner.Index );
+      myPotentialMaskToSwap.gameObject.transform.SetParent (swapW.transform, false);
+      myPotentialMaskToSwap.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0,0,0);
+      myPotentialMaskToSwap.MyOwner = swapW;
+      Debug.Log ("********MY mask to swap OWNER= "+myPotentialMaskToSwap.MyOwner.Index );
+
+
+      //myMaskList.TrimExcess();
+      //swapW.myMaskList.TrimExcess();
+
+      if(myMaskList[myMaskList.Count-1] == null){
+        myMaskList.RemoveAt(myMaskList.Count-1);
+      }
+
+      if(swapW.myMaskList[swapW.myMaskList.Count-1] == null){
+        swapW.myMaskList.RemoveAt(swapW.myMaskList.Count-1);
+      }
+
+      foreach(Mask msk in myMaskList){
+        if(msk == null){
+          myMaskList.Remove(msk);
+        }
+      }
+
+      foreach(Mask msk in swapW.myMaskList){
+        if(msk == null){
+          swapW.myMaskList.Remove(msk);
+        }
+      }
 
       CheckPlayerState ();
       swapW.CheckPlayerState ();
       DisplayOnlyTopMask ();
       swapW.DisplayOnlyTopMask ();
 
-      //Set the new parent
-      theirPotentialMaskToSwap.gameObject.transform.SetParent (orig_parent.transform, false);
-      Debug.Log ("THEIR MASK should be set to MainPlayer "+orig_parent.Index);
-      myPotentialMaskToSwap.gameObject.transform.SetParent (swapW.transform, false);
-      Debug.Log ("my SWAP MASK should be set to theirPlayer "+swapW.Index);
-
-      ////////////theirPotentialMaskToSwap.gameObject.GetComponent<RectTransform> ().localPosition = theirPotentialMaskToSwap.gameObject.transform.parent.transform.GetComponent<RectTransform>().localPosition;
-      ////////////myPotentialMaskToSwap.gameObject.GetComponent<RectTransform> ().localPosition = myPotentialMaskToSwap.gameObject.transform.parent.transform.GetComponent<RectTransform>().localPosition;
-
-
-      Debug.Break();
-
-      //Set the new parent
-      //myMaskList [myRand].gameObject.transform.SetParent (myMaskList [myRand].MyOwner.transform);
-      //swapW.myMaskList [theirRand].gameObject.transform.SetParent (swapW.myMaskList [theirRand].MyOwner.transform);
-
-      //Set new position & new anchored position
-      ///////////myMaskList [myRand].gameObject.GetComponent<RectTransform> ().anchoredPosition = new Vector3 (0, 0, 0);
-      ///////////myMaskList [myRand].gameObject.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
-
-      ///////////swapW.myMaskList [theirRand].gameObject.GetComponent<RectTransform> ().anchoredPosition = new Vector3 (0, 0, 0);
-      ///////////swapW.myMaskList [theirRand].gameObject.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
-
-
-//
-//
-//      //insert into list
-//      myMaskList.Insert (myRand, swapW.myMaskList [theirRand]);
-//      //Set Parent of new mask in my list to me. 
-//      myMaskList [myRand].gameObject.transform.SetParent (swapW.transform);
-//      //move transform to mainplayer to original swapper transform
-//      ///////myMaskList[myRand].GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
-//      myMaskList [myRand].GetComponent<RectTransform> ().localPosition = new Vector2 (0, 0);
-//
-//
-//      //trying something new, remove their mask before inserting a new one
-//      swapW.myMaskList.Remove (swapW.myMaskList [theirRand]);
-//      //insert myMask into other player list
-//      swapW.myMaskList.Insert (theirRand, myMaskToSwap);
-//      //set parent of original swapper mask to other position
-//      myMaskToSwap.gameObject.transform.SetParent (swapW.transform);
-//      //move oriingal mask to swap to SwapW position
-//      ///////myMaskToSwap.gameObject.GetComponent<RectTransform>().localPosition = swapW.gameObject.GetComponent<RectTransform>().localPosition;
-//
-//
-//      //myMaskToSwap.gameObject.transform.SetParent(swapW.transform);
-//      //GetComponent<RectTransform>().localPosition = swapW.transform.GetComponent<RectTransform>().localPosition;
-//      /////////theirSwapMask.GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
-//      theirSwapMask.GetComponent<RectTransform> ().localPosition = new Vector2 (0, 0);
-//
-//
-//
-//      //swapW.myMaskList [theirRand].GetComponent<RectTransform>().localPosition = GetComponent<RectTransform>().localPosition;
-//      //swapW.myMaskList.Insert (theirRand, myMaskToSwap);
-//      //swapW.myMaskList [theirRand].gameObject.transform.SetParent(myMaskToSwap.MyOwner.transform);
-//      myMaskList.Remove (myMaskToSwap);
-
-      //Debug.Break ();
-      //////////////////CheckPlayerState ();
-      /////////////////swapW.CheckPlayerState ();
-      /////////////////DisplayOnlyTopMask ();
-      /////////////////swapW.DisplayOnlyTopMask ();
     } else {
       Debug.Log ("Passing on a swap Decision because SOMEONE DOES NOT HAVE ENOUGH MASKS. " + Index);
       PerformMyDecision ();

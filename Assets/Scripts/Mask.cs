@@ -62,11 +62,19 @@ public class Mask : MonoBehaviour {
   }
 
   public float ChangeAlphaColor(float _a){
+
     GetComponent<Image> ().color = new Color (GetComponent<Image> ().color.r, GetComponent<Image> ().color.g, GetComponent<Image> ().color.b, _a);
     return _a;
   }
 
   public void MaskClick(){
+
+    /*foreach (Mask msk in MyOwner.myMaskList) {
+      if(msk == null){
+        MyOwner.myMaskList.Remove(msk);
+      }
+    }*/
+
     switch (GameManager.instance.MyGameState) {
     case Game_State.Flipping:
       if(MyOwner.myMaskList.Count > 0){
@@ -116,8 +124,10 @@ public class Mask : MonoBehaviour {
   }
 
   public void MaskAnimation(){
-    maskAnim.enabled = true;
-    Invoke ("DestroyMask", 1.0f);
+		if (maskAnim != null) {
+			maskAnim.enabled = true;
+			Invoke ("DestroyMask", 1.0f);
+		}
   }
 
   public void DestroyMask(){

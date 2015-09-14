@@ -1,14 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Individual.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Mask.cs">
     <Files>
-      <File FileName="..\facefacerev\facefacerev\Assets\Assets\RealSense.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UI_Manager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Individual.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Mask.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\MainPlayer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SoundManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Mask.cs" Line="122" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
