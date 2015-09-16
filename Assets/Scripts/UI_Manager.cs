@@ -104,7 +104,7 @@ public class UI_Manager : MonoBehaviour {
   }
 
   public void UpdateMaskNumberGUI( ){
-    masksInGame.text = "Number of Masks Left in Game: " + GameManager.instance.RandMaskNumInGame;
+    masksInGame.text = "Masks Remaining: " + GameManager.instance.RandMaskNumInGame;
   }
 
   public void UpdateTurnPositionGUI(int turnPos){

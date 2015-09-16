@@ -69,7 +69,7 @@ public class Mask : MonoBehaviour {
 
   public void MaskClick(){
 
-    MyOwner.ClearExcessMasks ();
+    //MyOwner.ClearExcessMasks ();
 
     switch (GameManager.instance.MyGameState) {
     case Game_State.Flipping:
@@ -79,11 +79,11 @@ public class Mask : MonoBehaviour {
       break;
     case Game_State.SelectWhom:
       Debug.Log ("Select whom is active");
-      //This might need to be moved to another area. What about select for swap?
-      //MaskAnimation();
       MainPlayer.instance.SetSelectWhomSelection(MyOwner);
       Debug.Log ("I selected "+MyOwner.Index);
-      //SoundManager.instance.PlaySingle(
+      if(MainPlayer.instance.MyCovertIntention == CovertIntention.Deliver){
+        MainPlayer.instance.DeliverWhom = MyOwner;
+      }
       break;
     }
   }

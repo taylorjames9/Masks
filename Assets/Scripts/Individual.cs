@@ -17,6 +17,7 @@ public class Individual : MonoBehaviour
 
   public Image myMaskImage;
   public Sprite skull;
+  public Sprite skull_if_chosen;
   public AudioClip Shotgun;
   public AudioClip Swish;
   private int _index;
@@ -74,6 +75,13 @@ public class Individual : MonoBehaviour
 
   public Text myThinkingText;
 
+  public Color myAttackColor;
+  public Color mySwapColor;
+
+  private bool iAmChosenTarget;
+  public bool I_AM_CHOSEN{ get { return iAmChosenTarget; } set { iAmChosenTarget = value; } }
+
+
   void OnEnable ()
   {
     //subscribe to GameManager OnTurnChange event
@@ -90,7 +98,8 @@ public class Individual : MonoBehaviour
   // Use this for initialization
   void Start ()
   {
-
+    if (I_AM_CHOSEN)
+      skull = skull_if_chosen;
   }
 
   public bool IsItMyTurn ()
@@ -293,15 +302,8 @@ public class Individual : MonoBehaviour
 
   public virtual void ClearMyTurn ()
   {
-//    foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
-//      foreach (Mask msk in ind.myMaskList) {
-//        if (msk == null) {
-//          ind.myMaskList.Remove (msk);
-//        }
-//      }
-//    }
 
-    ClearExcessMasks ();
+    /////////ClearExcessMasks ();
 
     if (Index == 0) {
       MyCovertIntention = CovertIntention.None;
@@ -358,7 +360,7 @@ public class Individual : MonoBehaviour
           GameManager.instance.MyGameState = Game_State.SelectWhom;
           //int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
           Individual vic = ChooseVic();
-          vic.TurnOnMyReticle ();
+          vic.TurnOnMyReticle ("attack");
           myThinkingText.text = "Attack";
           yield return new WaitForSeconds (1.5f);
 
@@ -366,18 +368,21 @@ public class Individual : MonoBehaviour
           ClearMyTurn ();
           break;
         case MaskType.Defend:
-          myThinkingText.text = "Defend";
+          myThinkingText.text = "Pass";
           yield return new WaitForSeconds (1.5f);
           PerformMyDecision ();
           ClearMyTurn ();
           break;
         case MaskType.Switch:
+          GameManager.instance.MyGameState = Game_State.SelectWhom;
           int r_swapMask = Random.Range (0, myMaskList.Count - 1);
           Mask myOwnMaskToSwap = myMaskList [r_swapMask];
-          int r_swapVic = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
-          Individual vic_toSwap = GameManager.instance.groupOfPlayersList [r_swapVic];
+          //int r_swapVic = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
+          Individual vic_toSwap = ChooseVic();
+          vic_toSwap.TurnOnMyReticle("swap");
           myThinkingText.text = "Swap";
           yield return new WaitForSeconds (1.5f);
+          vic_toSwap.TurnOffMyReticle ();
           PerformMyDecision (myOwnMaskToSwap, vic_toSwap);
           ClearMyTurn ();
           break;
@@ -575,7 +580,17 @@ public class Individual : MonoBehaviour
   //this method signature means deliver
   public void PerformMyDecision (string d, Individual deliverTo)
   {
-    
+
+    Debug.Log ("Deliver to is PERFOMRING a DECISION");
+     if (deliverTo.I_AM_CHOSEN) {
+      Debug.Log ("Pick a winner");
+      GameManager.instance.MyGameState = Game_State.Win;
+      GameManager.instance.Win_GUI.SetActive(true);
+    } else {
+      Debug.Log ("Pick a loser");
+      GameManager.instance.MyGameState = Game_State.GameOver;
+      GameManager.instance.Game_Over_GUI.SetActive(true);
+    }
   }
 
   public void SetSelectMask (Mask msk)
@@ -598,16 +613,24 @@ public class Individual : MonoBehaviour
     SwapWhom = null;
   }
   
-  public void TurnOnMyReticle ()
+  public void TurnOnMyReticle (string attackORSwap)
   {
-    if (GameManager.instance.MyGameState == Game_State.SelectWhom) {
-      //Debug.Log ("Turn on my reticle");
+
+    if (GameManager.instance.MyGameState == Game_State.SelectWhom ) {
       transform.FindChild ("Reticle").gameObject.SetActive (true);
+      if (attackORSwap == "attack") {
+        transform.FindChild ("Reticle").gameObject.GetComponent<Image>().color = new Color(myAttackColor.r, myAttackColor.g, myAttackColor.b);
+        
+      } else if (attackORSwap == "swap") {
+        transform.FindChild ("Reticle").gameObject.GetComponent<Image>().color = new Color(mySwapColor.r, mySwapColor.g, mySwapColor.b);
+      }
     }
   }
 
   public void TurnOffMyReticle ()
   {
+    //transform.FindChild ("Reticle").gameObject.SetActive (false);
+
     if (GameManager.instance.MyGameState == Game_State.SelectWhom) {
       //Debug.Log ("Turn off my reticle");
       transform.FindChild ("Reticle").gameObject.SetActive (false);
@@ -640,7 +663,10 @@ public class Individual : MonoBehaviour
   //reaction
   public void GetDelivery ()
   {
-
+    if (MainPlayer.instance.MyCovertIntention == CovertIntention.Deliver && GameManager.instance.MyGameState == Game_State.SelectWhom) {
+      MainPlayer.instance.DeliverWhom = this;
+      TurnOffMyReticle();
+    }
   }
   //reaction
   public void GetFlipped ()
@@ -648,5 +674,4 @@ public class Individual : MonoBehaviour
 
 
   }
-
 }

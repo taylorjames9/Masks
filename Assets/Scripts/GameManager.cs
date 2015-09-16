@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum Game_State {None, Flipping, CovertActionSelect, SelectWhom, SelectMask, NPCTurn, GameOver};
+public enum Game_State {None, Flipping, CovertActionSelect, SelectWhom, SelectMask, NPCTurn, GameOver, Win};
 
 public class GameManager : MonoBehaviour {
 
@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
   public delegate void TurnChangeAction(int _turnPos);
   public static event TurnChangeAction OnTurnChange;
   public GameObject Game_Over_GUI;
+  public GameObject Win_GUI;
 
   void Awake(){
     instance = this;
@@ -52,12 +53,16 @@ public class GameManager : MonoBehaviour {
   }
   
   public List<Individual> CreateGroupOfPlayers(){
+    int Rand_Chosen = Random.Range (1, RandGroupNumInGame);
     for (int i=1; i<=RandGroupNumInGame; i++) {
       GameObject myIndieObj = Instantiate(_proto_individual, new Vector2 (50, 50), Quaternion.identity) as GameObject;
       Individual recentlyManufacturedIndie = myIndieObj.GetComponent<Individual>();
       recentlyManufacturedIndie.Index = i;
       groupOfPlayersList.Add(recentlyManufacturedIndie);
       myIndieObj.transform.SetParent(GameObject.FindGameObjectWithTag("GameController").transform);
+      if(i == Rand_Chosen){
+        recentlyManufacturedIndie.I_AM_CHOSEN = true;
+      }
     }
     //instantiate mainplayer
     GameObject _mainPalyerObj = Instantiate(mainPlayer, new Vector2 (50, 50), Quaternion.identity) as GameObject;
@@ -141,8 +146,15 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (MyGameState == Game_State.GameOver)
-			Game_Over_GUI.SetActive (true);
+		if (MyGameState == Game_State.GameOver) {
+      Game_Over_GUI.SetActive (true);
+    }
+
+    if (MyGameState == Game_State.Win) {
+      Win_GUI.SetActive(true);
+    }
+
+
 	}
 
   public Individual GetIndividualwithIndex(int _index){
