@@ -75,6 +75,7 @@ public class Mask : MonoBehaviour {
     case Game_State.Flipping:
       if(MyOwner.myMaskList.Count > 0){
         MyOwner.RemoveMask ();
+
       }
       break;
     case Game_State.SelectWhom:

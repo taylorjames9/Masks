@@ -172,6 +172,7 @@ public class Individual : MonoBehaviour
       }
       break;
     }
+    TurnOffMyReticle ();
     return MyPlayerState;
   }
 
@@ -286,7 +287,7 @@ public class Individual : MonoBehaviour
 
     //Choose a random action. 
     if (turnPos == Index) {
-      if (turnPos != 0) {
+      if (turnPos != 0 && GameManager.instance.MyGameState != Game_State.GameOver && GameManager.instance.MyGameState != Game_State.Win && !GameManager.instance.Win_GUI.activeSelf) {
         GameManager.instance.MyGameState = Game_State.NPCTurn;
         transform.FindChild ("thoughtbubble").gameObject.SetActive (true);
         myThinkingText.text = "hmm...";
@@ -655,8 +656,6 @@ public class Individual : MonoBehaviour
   public void GetSwapped (Individual sender)
   {
     if (myMaskList.Count > 0) {
-      //int r = Random.Range (0, myMaskList.Count - 1);
-      //Mask myMaskToSwapOut = myMaskList [r];
       Debug.Log ("I got swapped at Bob's swap shop!");
     }
   }
