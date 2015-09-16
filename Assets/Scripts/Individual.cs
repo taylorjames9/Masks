@@ -145,10 +145,13 @@ public class Individual : MonoBehaviour
   {
     switch (myMaskList.Count) {
     case 0:
-      if(Index == 0)
-        GameManager.instance.MyGameState = Game_State.GameOver;
+      if(Index == 0){
+        if(!I_AM_CHOSEN){
+          GameManager.instance.MyGameState = Game_State.GameOver;
+        }
+      }
       if(GameManager.instance.TurnPosition == 0 && GameManager.instance.MyGameState ==Game_State.Flipping){
-        if(MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead){
+        if(MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead && !I_AM_CHOSEN){
           GameManager.instance.MyGameState = Game_State.GameOver;
         }
 				//GetComponent<Individual>().enabled = false;
