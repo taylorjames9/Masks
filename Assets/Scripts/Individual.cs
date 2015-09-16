@@ -72,6 +72,8 @@ public class Individual : MonoBehaviour
 
   public static event TurnCompleteAction OnTurnComplete;
 
+  public Text myThinkingText;
+
   void OnEnable ()
   {
     //subscribe to GameManager OnTurnChange event
@@ -272,13 +274,20 @@ public class Individual : MonoBehaviour
 
   public virtual void OnMyTurn (int turnPos)
   {
+
     //Choose a random action. 
-    if (turnPos == Index && turnPos != 0 /*&& MyPlayerState != PlayerState.Dead && MyPlayerState != PlayerState.Bone*/) {
-      GameManager.instance.MyGameState = Game_State.NPCTurn;
-      transform.FindChild ("thoughtbubble").gameObject.SetActive (true);
-      StartCoroutine (NPCTURN ());
-    } else {
-      //ClearMyTurn();
+    if (turnPos == Index) {
+      if (turnPos != 0) {
+        GameManager.instance.MyGameState = Game_State.NPCTurn;
+        transform.FindChild ("thoughtbubble").gameObject.SetActive (true);
+        myThinkingText.text = "hmm...";
+        myThinkingText.transform.SetParent(this.gameObject.transform, true);
+        myThinkingText.GetComponent<RectTransform>().localPosition = new Vector2(0,0.35f);
+        //myThinkingText.GetComponent<RectTransform>().localPosition = new Vector2(GetComponent<RectTransform>().localPosition.x,GetComponent<RectTransform>().localPosition.x);
+        StartCoroutine (NPCTURN ());
+      } else {
+        myThinkingText.text = "";
+      }
     }
   }
 
@@ -337,6 +346,7 @@ public class Individual : MonoBehaviour
       if (r < 20) {
         PerformMyDecision ();
         Debug.Log ("RIGHT AWAY I'M GOING TO PASS " + Index);
+        myThinkingText.text = "Pass";
       }
       ;
       if (myMaskList.Count > 0) {
@@ -349,11 +359,14 @@ public class Individual : MonoBehaviour
           //int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
           Individual vic = ChooseVic();
           vic.TurnOnMyReticle ();
+          myThinkingText.text = "Attack";
           yield return new WaitForSeconds (1.5f);
+
           PerformMyDecision (vic);
           ClearMyTurn ();
           break;
         case MaskType.Defend:
+          myThinkingText.text = "Defend";
           yield return new WaitForSeconds (1.5f);
           PerformMyDecision ();
           ClearMyTurn ();
@@ -363,6 +376,7 @@ public class Individual : MonoBehaviour
           Mask myOwnMaskToSwap = myMaskList [r_swapMask];
           int r_swapVic = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
           Individual vic_toSwap = GameManager.instance.groupOfPlayersList [r_swapVic];
+          myThinkingText.text = "Swap";
           yield return new WaitForSeconds (1.5f);
           PerformMyDecision (myOwnMaskToSwap, vic_toSwap);
           ClearMyTurn ();
