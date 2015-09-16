@@ -180,4 +180,9 @@ public class UI_Manager : MonoBehaviour {
     GameManager.instance.MyGameState = Game_State.SelectWhom;
     //Debug.Log ("Deliver Decision");
   }
+
+  //for button
+  public void Restart(){
+    Application.LoadLevel ("Main");
+  }
 }

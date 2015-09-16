@@ -134,13 +134,31 @@ public class Individual : MonoBehaviour
   {
     switch (myMaskList.Count) {
     case 0:
+      if(Index == 0)
+        GameManager.instance.MyGameState = Game_State.GameOver;
+      if(GameManager.instance.TurnPosition == 0 && GameManager.instance.MyGameState ==Game_State.Flipping){
+        if(MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead){
+          GameManager.instance.MyGameState = Game_State.GameOver;
+        }
+				//GetComponent<Individual>().enabled = false;
+      }
       MyPlayerState = PlayerState.Bone;
       break;
     case 1:
       MyPlayerState = PlayerState.AtTrueChar;
+      if(GameManager.instance.MyGameState ==Game_State.Flipping){
+        GameManager.instance.MyGameState = Game_State.Flipping;
+      } else {
+        //GameManager.instance.MyGameState = Game_State.NPCTurn;
+      }
       break;
     default:
       MyPlayerState = PlayerState.Alive;
+      if(GameManager.instance.MyGameState ==Game_State.Flipping){
+        GameManager.instance.MyGameState = Game_State.Flipping;
+      } else {
+        //GameManager.instance.MyGameState = Game_State.NPCTurn;
+      }
       break;
     }
     return MyPlayerState;
@@ -161,7 +179,7 @@ public class Individual : MonoBehaviour
 
   public void RemoveMask ()
   {
-    ClearExcessMasks ();
+    //ClearExcessMasks ();
 
     if (myMaskList.Count > 0) {
       if (GameManager.instance.MyGameState == Game_State.Flipping) {
@@ -176,7 +194,7 @@ public class Individual : MonoBehaviour
       CheckPlayerState ();
       DisplayOnlyTopMask ();
     }
-    ClearExcessMasks ();
+    //ClearExcessMasks ();
     UI_Manager.instance.UpdateMaskGUIForPlayer ();
 
   }
@@ -328,8 +346,8 @@ public class Individual : MonoBehaviour
         switch (myAction.MyMaskType) {
         case MaskType.Attack:
           GameManager.instance.MyGameState = Game_State.SelectWhom;
-          int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
-          Individual vic = GameManager.instance.groupOfPlayersList [r_whom];
+          //int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
+          Individual vic = ChooseVic();
           vic.TurnOnMyReticle ();
           yield return new WaitForSeconds (1.5f);
           PerformMyDecision (vic);
@@ -359,6 +377,17 @@ public class Individual : MonoBehaviour
       PerformMyDecision ();
       ClearMyTurn ();
     }
+  }
+
+  public Individual ChooseVic( ){
+    int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
+    Individual vic = GameManager.instance.groupOfPlayersList [r_whom];
+    if (vic.MyPlayerState == PlayerState.Dead || vic.MyPlayerState == PlayerState.Bone) {
+      return ChooseVic ();
+    } else {
+      return vic;
+    }
+
   }
 
 

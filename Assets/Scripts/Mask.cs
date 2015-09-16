@@ -74,10 +74,7 @@ public class Mask : MonoBehaviour {
     switch (GameManager.instance.MyGameState) {
     case Game_State.Flipping:
       if(MyOwner.myMaskList.Count > 0){
-        //MaskAnimation();
         MyOwner.RemoveMask ();
-        //MyOwner.CheckPlayerState();
-        //MyOwner.DisplayOnlyTopMask();
       }
       break;
     case Game_State.SelectWhom:

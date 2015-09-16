@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum Game_State {None, Flipping, CovertActionSelect, SelectWhom, SelectMask, NPCTurn};
+public enum Game_State {None, Flipping, CovertActionSelect, SelectWhom, SelectMask, NPCTurn, GameOver};
 
 public class GameManager : MonoBehaviour {
 
@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
 
   public delegate void TurnChangeAction(int _turnPos);
   public static event TurnChangeAction OnTurnChange;
+  public GameObject Game_Over_GUI;
 
   void Awake(){
     instance = this;
@@ -140,7 +141,8 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
+		if (MyGameState == Game_State.GameOver)
+			Game_Over_GUI.SetActive (true);
 	}
 
   public Individual GetIndividualwithIndex(int _index){

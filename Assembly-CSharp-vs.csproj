@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Game_Over_Button.cs" />
      <Compile Include="Assets\Scripts\Individual.cs" />
      <Compile Include="Assets\Scripts\MainPlayer.cs" />
      <Compile Include="Assets\Scripts\Mask.cs" />
