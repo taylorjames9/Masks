@@ -16,7 +16,7 @@ public class MainPlayer : Individual {
   public bool SwapCapability{ get { return swapCapability; } set { swapCapability = value ; } }
 
   private Briefcase myBriefcaseSelect;
-
+  public Briefcase MyBriefCaseSelect{ get { return myBriefcaseSelect; } set { myBriefcaseSelect = value; } }
 
 
   public static MainPlayer instance { get; set; }

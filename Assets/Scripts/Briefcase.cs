@@ -9,13 +9,9 @@ public class Briefcase : MonoBehaviour {
 
 	public Briefcase_Type myBriefCaseType;
 
-	// Use this for initialization
-	void Start () {
+  //connected to a button
+  public void SelectThisBriefCase(){
+    MainPlayer.instance.MyBriefCaseSelect = this;
+  }
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
