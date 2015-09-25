@@ -53,16 +53,27 @@ public class GameManager : MonoBehaviour {
   }
   
   public List<Individual> CreateGroupOfPlayers(){
-    int Rand_Chosen = Random.Range (1, RandGroupNumInGame);
+    int Rand_YELLOW = Random.Range (1, RandGroupNumInGame);
+    int Rand_RED = Random.Range (1, RandGroupNumInGame);
+    int Rand_GREY = Random.Range (1, RandGroupNumInGame);
+
+    if (Rand_YELLOW == Rand_RED || Rand_YELLOW == Rand_GREY || Rand_GREY == Rand_RED)
+      CreateGroupOfPlayers ();
+
     for (int i=1; i<=RandGroupNumInGame; i++) {
       GameObject myIndieObj = Instantiate(_proto_individual, new Vector2 (50, 50), Quaternion.identity) as GameObject;
       Individual recentlyManufacturedIndie = myIndieObj.GetComponent<Individual>();
       recentlyManufacturedIndie.Index = i;
       groupOfPlayersList.Add(recentlyManufacturedIndie);
       myIndieObj.transform.SetParent(GameObject.FindGameObjectWithTag("GameController").transform);
-      if(i == Rand_Chosen){
-        recentlyManufacturedIndie.I_AM_CHOSEN = true;
-      }
+      if(i == Rand_YELLOW)
+        recentlyManufacturedIndie.I_AM_YELLOW = true;
+      if(i == Rand_RED)
+		 recentlyManufacturedIndie.I_AM_RED = true;
+	  if(i==Rand_GREY)
+		 recentlyManufacturedIndie.I_AM_GREY = true;
+
+
     }
     //instantiate mainplayer
     GameObject _mainPalyerObj = Instantiate(mainPlayer, new Vector2 (50, 50), Quaternion.identity) as GameObject;

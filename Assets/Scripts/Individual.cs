@@ -17,7 +17,9 @@ public class Individual : MonoBehaviour
 
   public Image myMaskImage;
   public Sprite skull;
-  public Sprite skull_if_chosen;
+  public Sprite skull_if_yellow;
+  public Sprite skull_if_grey;
+  public Sprite skull_if_red;
   public AudioClip Shotgun;
   public AudioClip Swish;
   private int _index;
@@ -44,6 +46,7 @@ public class Individual : MonoBehaviour
   private Mask swapWhat;
   private Individual swapWhom;
   private Individual deliverWhom;
+  private Briefcase myBrifCase;
 
   public Individual AttackWhom{ get { return attackWhom; } set { attackWhom = value; } }
 
@@ -54,6 +57,7 @@ public class Individual : MonoBehaviour
   public Individual DeliverWhom{ get { return deliverWhom; } set { deliverWhom = value; } }
 
   public CovertIntention MyCovertIntention{ get; set; }
+	public Briefcase BriefCase{ get { return myBrifCase; } set { myBrifCase = value; } }
   
   public int Index{ get { return _index; } set { _index = value; } }
 
@@ -78,8 +82,12 @@ public class Individual : MonoBehaviour
   public Color myAttackColor;
   public Color mySwapColor;
 
-  private bool iAmChosenTarget;
-  public bool I_AM_CHOSEN{ get { return iAmChosenTarget; } set { iAmChosenTarget = value; } }
+  private bool iAmChosenYellow;
+  public bool I_AM_YELLOW{ get { return iAmChosenYellow; } set { iAmChosenYellow = value; } }
+  private bool iAmChosenRed;
+  public bool I_AM_RED { get { return iAmChosenRed; } set { iAmChosenRed = value; } }
+  private bool iAmChosenGrey;
+  public bool I_AM_GREY { get { return iAmChosenGrey; } set { iAmChosenGrey = value; } }
 
 
   void OnEnable ()
@@ -98,8 +106,12 @@ public class Individual : MonoBehaviour
   // Use this for initialization
   void Start ()
   {
-    if (I_AM_CHOSEN)
-      skull = skull_if_chosen;
+    if (I_AM_YELLOW)
+      skull = skull_if_yellow;
+    if (I_AM_RED)
+      skull = skull_if_red;
+    if (I_AM_GREY)
+      skull = skull_if_grey;
   }
 
   public bool IsItMyTurn ()
@@ -146,12 +158,12 @@ public class Individual : MonoBehaviour
     switch (myMaskList.Count) {
     case 0:
       if(Index == 0){
-        if(!I_AM_CHOSEN){
-          GameManager.instance.MyGameState = Game_State.GameOver;
-        }
+//        if(!I_AM_CHOSEN){
+//          GameManager.instance.MyGameState = Game_State.GameOver;
+//        }
       }
       if(GameManager.instance.TurnPosition == 0 && GameManager.instance.MyGameState ==Game_State.Flipping){
-        if(MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead && !I_AM_CHOSEN){
+        if(MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead){
           GameManager.instance.MyGameState = Game_State.GameOver;
         }
 				//GetComponent<Individual>().enabled = false;
@@ -586,7 +598,7 @@ public class Individual : MonoBehaviour
   {
 
     Debug.Log ("Deliver to is PERFOMRING a DECISION");
-     if (deliverTo.I_AM_CHOSEN) {
+     if (deliverTo.I_AM_YELLOW) {
       Debug.Log ("Pick a winner");
       GameManager.instance.MyGameState = Game_State.Win;
       GameManager.instance.Win_GUI.SetActive(true);
