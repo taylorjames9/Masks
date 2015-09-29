@@ -38,7 +38,7 @@ public class MainCam_Day_Night : MonoBehaviour {
 		} else if(dayNight == "night") {
 			myCam.backgroundColor = NightTimeColor;
       dayNightLabel.text = "Night";
-      dayNightRules.text = "During the night, Senators will covert actions. Watch them carefully to deduce which masks they have in their possession. You go first when night falls.";
+      dayNightRules.text = "During the night, Senators will use covert actions. Watch them carefully to understand which masks they have in their possession. (You go first when night falls.)";
 		}
 
 	}

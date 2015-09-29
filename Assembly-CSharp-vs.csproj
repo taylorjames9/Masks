@@ -53,7 +53,6 @@
      <Compile Include="Assets\Scripts\MainCam_Day_Night.cs" />
      <Compile Include="Assets\Scripts\MainPlayer.cs" />
      <Compile Include="Assets\Scripts\Mask.cs" />
-     <Compile Include="Assets\Scripts\ScoreKeeper.cs" />
      <Compile Include="Assets\Scripts\Slider_Changer.cs" />
      <Compile Include="Assets\Scripts\SoundManager.cs" />
      <Compile Include="Assets\Scripts\UI_Manager.cs" />

@@ -394,7 +394,6 @@ public class Individual : MonoBehaviour
   public IEnumerator NPCTURN ()
   {
     float sliderVal_adjusted = speedSlider * speedMultiplier;
-    Debug.Log ("speedSlider Slider adjusted KeyValuePair " + sliderVal_adjusted);
     if (MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead) {
       yield return new WaitForSeconds (sliderVal_adjusted);
       Debug.Log ("MY TURN MOFOS: " + Index);
@@ -454,10 +453,13 @@ public class Individual : MonoBehaviour
     int r_whom = Random.Range (0, GameManager.instance.groupOfPlayersList.Count - 1);
     Individual vic = GameManager.instance.groupOfPlayersList [r_whom];
     if (vic.MyPlayerState == PlayerState.Dead || vic.MyPlayerState == PlayerState.Bone || vic.CheckTopMask().MyMaskType == MaskType.Defend) {
-      if(num < 0){
+      if(num < 1){
         PerformMyDecision();
+		    return vic;
       }
-      return ChooseVic (--num);
+      Debug.Log ("number of RECURSIONS "+num);
+      num--;
+      return ChooseVic (num);
     } else {
       return vic;
     }
