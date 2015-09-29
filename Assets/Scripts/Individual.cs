@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 //Covert intention is an action a character *intends* to take, but perhaps before all specifics
 //of the action are declared. This helps the code run more efficiently by only checking code that would make sense for this decision
+
 public enum CovertIntention
 {
   None,
