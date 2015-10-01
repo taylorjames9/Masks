@@ -59,12 +59,12 @@ public class GameManager : MonoBehaviour {
 
   // Use this for initialization
   void Start () {
-    Debug.Log ("Ran start");
+    //Debug.Log ("Ran start");
     MyGameState = Game_State.Flipping;
     RandGroupNumInGame = Random.Range (5, 9);
-	  Debug.Log ("RandGroup num = "+RandGroupNumInGame);
+	  //Debug.Log ("RandGroup num = "+RandGroupNumInGame);
     RandMaskNumInGame = Random.Range (RandGroupNumInGame*3, RandGroupNumInGame * 5);
-	  Debug.Log ("RandMask num = "+RandMaskNumInGame);
+	  //Debug.Log ("RandMask num = "+RandMaskNumInGame);
     numPoints = RandGroupNumInGame;
     CreateGroupOfPlayers ();
     PlotGroupInCircle ();
@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour {
     int i = 0;
     foreach (Individual indie in groupOfPlayersList) {
       i++;
-      Debug.Log ("ran through creation cycle");
+      //Debug.Log ("ran through creation cycle");
       //multiply 'i' by '1.0f' to ensure the result is a fraction
       float pointNum = (i * 1.0f) / numPoints;
       //angle along the unit circle for placing points
@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour {
 
 
   private void DistributeMasksToGroup (){
-    Debug.Log ("Distribute masks to group");
+    //Debug.Log ("Distribute masks to group");
     int _masksToHandout = RandMaskNumInGame;
 		while (_masksToHandout > 0) {
 			foreach (Individual indie in groupOfPlayersList) {
@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour {
 				} 
 			}
 		}
-    Debug.Log ("out of WHILE code");
+    //Debug.Log ("out of WHILE code");
     foreach (Individual ind in groupOfPlayersList) {
       ind.DisplayOnlyTopMask ();
     }

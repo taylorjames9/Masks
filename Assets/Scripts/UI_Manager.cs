@@ -92,7 +92,7 @@ public class UI_Manager : MonoBehaviour {
         guiMask.GetComponent<Image>().sprite = switchSprite;
         break;
       default:
-        Debug.Log ("UiManager can not find that mask tyep");
+        //Debug.Log ("UiManager can not find that mask tyep");
         break;
       }
     }
@@ -137,7 +137,7 @@ public class UI_Manager : MonoBehaviour {
  
 
   public void ShowPrompt_01 (){
-    Debug.Log ("Show prompt");
+    //Debug.Log ("Show prompt");
     Q1_Prompt.SetActive (true);
   }
 

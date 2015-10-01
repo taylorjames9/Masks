@@ -83,7 +83,7 @@ public class Mask : MonoBehaviour {
       break;
     case Game_State.SelectWhom:
       if(MainPlayer.instance.MyCovertIntention == CovertIntention.Deliver){ 
-        Debug.Log ("Select whom is active");
+        //Debug.Log ("Select whom is active");
         Briefcase_Type brf_color = MainPlayer.instance.MyBriefCaseSelect.myBriefCaseType;
         MyOwner.transform.FindChild("brf_inPossession").gameObject.SetActive (true);
         switch(brf_color){
@@ -103,7 +103,7 @@ public class Mask : MonoBehaviour {
         }
       }
       MainPlayer.instance.SetSelectWhomSelection(MyOwner);
-      Debug.Log ("I selected "+MyOwner.Index);
+      //Debug.Log ("I selected "+MyOwner.Index);
       MainPlayer.instance.DeliverWhom = MyOwner;
       break;
     default:
@@ -115,7 +115,7 @@ public class Mask : MonoBehaviour {
     if (GameManager.instance.MyGameState == Game_State.SelectMask) {
       List<Mask> clone_mskList = UI_Manager.instance.CloneOfMainPlayerMasks;
       clone_mskList.Reverse();
-      Debug.Log ("this index of the mask I just clicked on is : "+this.gui_Mask_INDEX);
+      //Debug.Log ("this index of the mask I just clicked on is : "+this.gui_Mask_INDEX);
       MainPlayer.instance.SetSelectMask(MainPlayer.instance.myMaskList[this.gui_Mask_INDEX]);
       GameManager.instance.MyGameState = Game_State.SelectWhom;
       transform.FindChild ("gui_ret").gameObject.SetActive (false);

@@ -12,7 +12,7 @@ public class Briefcase : MonoBehaviour {
 	public Briefcase_Type myBriefCaseType;
 
   void Start(){
-    Debug.Log ("Initialized");
+    //Debug.Log ("Initialized");
   }
 
   //connected to a button
@@ -31,8 +31,8 @@ public class Briefcase : MonoBehaviour {
 
   //this is a mouse rollover event
   public void Brief_GUI_ReticleON(){
-    Debug.Log ("Detected Rollover");
-    Debug.Log ("Game state is: " + GameManager.instance.MyGameState);
+    //Debug.Log ("Detected Rollover");
+    //Debug.Log ("Game state is: " + GameManager.instance.MyGameState);
     if (GameManager.instance.MyGameState == Game_State.SelectBriefCase) {
       transform.FindChild ("brf_ret_GUI").gameObject.SetActive (true);
       GetComponentInChildren<Animator> ().enabled = true;
@@ -41,7 +41,7 @@ public class Briefcase : MonoBehaviour {
 
   //this is a mouse rollover event
   public void Brief_GUI_ReticleOFF(){
-    Debug.Log ("Detected Roll OFF");
+    //Debug.Log ("Detected Roll OFF");
     if (GameManager.instance.MyGameState == Game_State.SelectBriefCase) {
       transform.FindChild ("brf_ret_GUI").gameObject.SetActive (false);
      

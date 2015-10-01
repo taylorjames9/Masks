@@ -228,9 +228,9 @@ public class Individual : MonoBehaviour
     foreach(Transform child in GetComponentsInChildren<RectTransform>()){
       if(child.tag == "brf_ind"){
         if(child.gameObject.activeSelf){
-          Debug.Log ("my briefcase indicator is active "+Index);
+          //Debug.Log ("my briefcase indicator is active "+Index);
           if(!IHaveMySpecialBriefcase){
-            Debug.Log ("THIS HIT TRUE. I DONT have my special Briefcase "+Index);
+            //Debug.Log ("THIS HIT TRUE. I DONT have my special Briefcase "+Index);
             GameManager.instance.MyGameState = Game_State.GameOver;
           }
         }
@@ -295,8 +295,7 @@ public class Individual : MonoBehaviour
     if (IsItMyTurn () && Index == 0) {
       switch (MyCovertIntention) {
       case CovertIntention.Defend:
-        Debug.Log ("Inside defend pass");
-
+        //Debug.Log ("Inside defend pass");
         PerformMyDecision ();
         MyCovertIntention = CovertIntention.None;
         GameManager.instance.MyGameState = Game_State.NPCTurn;
@@ -304,23 +303,23 @@ public class Individual : MonoBehaviour
 
         break;
       case CovertIntention.Attack:
-        Debug.Log ("Attack whom = " + AttackWhom);
+        //Debug.Log ("Attack whom = " + AttackWhom);
         if (AttackWhom != null) {
-          Debug.Log ("Inside attack and attack WHOM NOT NUll");
+          //Debug.Log ("Inside attack and attack WHOM NOT NUll");
           PerformMyDecision (AttackWhom);
           ClearMyTurn ();
         }
         break;
       case CovertIntention.Swap:
         if (SwapWhat != null && SwapWhom != null) {
-          Debug.Log ("Inside swap and swapWhat and swapWhom NOT NUll");
+          //Debug.Log ("Inside swap and swapWhat and swapWhom NOT NUll");
           PerformMyDecision (SwapWhat, SwapWhom);
           ClearMyTurn ();
         }
         break;
       case CovertIntention.Deliver:
         if (DeliverWhom != null && MainPlayer.instance.MyBriefCaseSelect != null) {
-          Debug.Log ("Inside deliver and DeliverWhom NOT NUll");
+          //Debug.Log ("Inside deliver and DeliverWhom NOT NUll");
           PerformMyDecision (MainPlayer.instance.MyBriefCaseSelect, DeliverWhom);
           DeliverWhom = null;
           MainPlayer.instance.MyBriefCaseSelect = null;
@@ -379,7 +378,7 @@ public class Individual : MonoBehaviour
     DeliverWhom = null;
     UI_Manager.instance.UpdateMaskGUIForPlayer ();
     OnTurnComplete ();
-    Debug.Log ("Cleared my turn for: " + Index);
+    //Debug.Log ("Cleared my turn for: " + Index);
 
     foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
       ind.TurnOffMyReticle ();
@@ -399,18 +398,18 @@ public class Individual : MonoBehaviour
     float sliderVal_adjusted = speedSlider * speedMultiplier;
     if (MyPlayerState != PlayerState.Bone && MyPlayerState != PlayerState.Dead) {
       yield return new WaitForSeconds (sliderVal_adjusted);
-      Debug.Log ("MY TURN MOFOS: " + Index);
+      //Debug.Log ("MY TURN MOFOS: " + Index);
       int r = Random.Range (1, 100);
       if (r < 20) {
         PerformMyDecision ();
-        Debug.Log ("RIGHT AWAY I'M GOING TO PASS " + Index);
+        //Debug.Log ("RIGHT AWAY I'M GOING TO PASS " + Index);
         myThinkingText.text = "Pass";
       }
       ;
       if (myMaskList.Count > 0) {
         int m = Random.Range (0, myMaskList.Count - 1);
         Mask myAction = myMaskList [m];
-        Debug.Log ("NpC " + Index + " intention to use NPC mask = " + myAction.MyMaskType.ToString ());
+        //Debug.Log ("NpC " + Index + " intention to use NPC mask = " + myAction.MyMaskType.ToString ());
         switch (myAction.MyMaskType) {
         case MaskType.Attack:
           GameManager.instance.MyGameState = Game_State.SelectWhom;
@@ -441,12 +440,12 @@ public class Individual : MonoBehaviour
           ClearMyTurn ();
           break;
         default:
-          Debug.Log ("Mask type for an NPC turn seems to be unknown." + Index);
+          //Debug.Log ("Mask type for an NPC turn seems to be unknown." + Index);
           break;
         }
       } 
     } else {
-      Debug.Log ("I'M DEAD OR BONE. PASS ON MY TURN.");
+      //Debug.Log ("I'M DEAD OR BONE. PASS ON MY TURN.");
       PerformMyDecision ();
       ClearMyTurn ();
     }
@@ -460,7 +459,7 @@ public class Individual : MonoBehaviour
         PerformMyDecision();
 		    return vic;
       }
-      Debug.Log ("number of RECURSIONS "+num);
+      //Debug.Log ("number of RECURSIONS "+num);
       num--;
       return ChooseVic (num);
     } else {
@@ -496,17 +495,17 @@ public class Individual : MonoBehaviour
   public void PerformMyDecision (Mask myMaskToSwap, Individual swapW)
   {
     if (myMaskList.Count > 0 && swapW.myMaskList.Count > 0 && myMaskToSwap.MyOwner.Index != swapW.Index) {
-      Debug.Log ("Performing a swap decision. " + Index);
+      //Debug.Log ("Performing a swap decision. " + Index);
       int myRand = Random.Range (0, myMaskList.Count);
       int theirRand = Random.Range (0, swapW.myMaskList.Count);
 
       Individual orig_parent = myMaskToSwap.MyOwner;
       if (swapW.Index == Index) {
-        Debug.Log ("I'm swapping WITH MYSELF!!");
+        //Debug.Log ("I'm swapping WITH MYSELF!!");
       }
 
       if (GameManager.instance.TurnPosition == 0) {
-        Debug.Log ("Swap on turn position = " + GameManager.instance.TurnPosition);
+        //Debug.Log ("Swap on turn position = " + GameManager.instance.TurnPosition);
         //mySwapMask = myMaskToSwap;
         myRand = myMaskList.IndexOf (myMaskToSwap);
       } 
@@ -524,7 +523,7 @@ public class Individual : MonoBehaviour
 
       //tell me everything in my list
       foreach(Mask msk in myMaskList){
-        Debug.Log (" my Mask List after INSERT"+ msk.MyMaskType);
+        //Debug.Log (" my Mask List after INSERT"+ msk.MyMaskType);
         switch(msk.MyMaskType){
         case MaskType.Attack:
           msk.GetComponent<Image>().sprite = msk.myPossibleMaskImages[0];
@@ -541,7 +540,7 @@ public class Individual : MonoBehaviour
         }
       }
       foreach(Mask msk in swapW.myMaskList){
-        Debug.Log (" their mask list after INSERT " + msk.MyMaskType);
+        //Debug.Log (" their mask list after INSERT " + msk.MyMaskType);
         //tell me everything in their list
           switch(msk.MyMaskType){
           case MaskType.Attack:
@@ -562,11 +561,11 @@ public class Individual : MonoBehaviour
       theirPotentialMaskToSwap.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0,0,0);
       theirPotentialMaskToSwap.MyOwner = orig_parent;
 
-      Debug.Log ("*******Their mask to swap OWNER= "+theirPotentialMaskToSwap.MyOwner.Index );
+      //Debug.Log ("*******Their mask to swap OWNER= "+theirPotentialMaskToSwap.MyOwner.Index );
       myPotentialMaskToSwap.gameObject.transform.SetParent (swapW.transform, false);
       myPotentialMaskToSwap.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0,0,0);
       myPotentialMaskToSwap.MyOwner = swapW;
-      Debug.Log ("********MY mask to swap OWNER= "+myPotentialMaskToSwap.MyOwner.Index );
+      //Debug.Log ("********MY mask to swap OWNER= "+myPotentialMaskToSwap.MyOwner.Index );
 
       if(myMaskList[myMaskList.Count-1] == null){
         myMaskList.RemoveAt(myMaskList.Count-1);
@@ -594,7 +593,7 @@ public class Individual : MonoBehaviour
       swapW.DisplayOnlyTopMask ();
 
     } else {
-      Debug.Log ("Passing on a swap Decision because SOMEONE DOES NOT HAVE ENOUGH MASKS. " + Index);
+      //Debug.Log ("Passing on a swap Decision because SOMEONE DOES NOT HAVE ENOUGH MASKS. " + Index);
       PerformMyDecision ();
     }
 
@@ -603,12 +602,12 @@ public class Individual : MonoBehaviour
   //this method signature means deliver
   public void PerformMyDecision (Briefcase brf, Individual deliverTo)
   {
-    Debug.Log ("Deliver to is PERFOMRING a DECISION");
+    //Debug.Log ("Deliver to is PERFOMRING a DECISION");
     brf.NoMas ();
     if ((brf.myBriefCaseType == Briefcase_Type.YELLOW && deliverTo.I_AM_YELLOW) || (brf.myBriefCaseType == Briefcase_Type.RED && deliverTo.I_AM_RED) ||  (brf.myBriefCaseType == Briefcase_Type.GREY && deliverTo.I_AM_GREY )) {
       deliverTo.IHaveMySpecialBriefcase = true;
 
-      Debug.Log ("My name is : "+deliverTo.Index+" and I have my mask ");
+      //Debug.Log ("My name is : "+deliverTo.Index+" and I have my mask ");
       if(CheckIfEveryOneHasTheirSpecialBrief()){
         PlayerPrefs.SetInt ("money", PlayerPrefs.GetInt ("money") + 40003);
         GameManager.instance.MyGameState = Game_State.Win;
@@ -622,10 +621,10 @@ public class Individual : MonoBehaviour
     foreach (Individual ind in GameManager.instance.groupOfPlayersList) {
       if(ind.IHaveMySpecialBriefcase){
         GameManager.instance.NUM_Success_Delivery++;
-        Debug.Log ("GameManager.instance.NUM_Success_Delivery "+GameManager.instance.NUM_Success_Delivery);
+        //Debug.Log ("GameManager.instance.NUM_Success_Delivery "+GameManager.instance.NUM_Success_Delivery);
       }
     }
-    Debug.Log ("This many people have a mask that belongs to them : " + GameManager.instance.NUM_Success_Delivery);
+    //Debug.Log ("This many people have a mask that belongs to them : " + GameManager.instance.NUM_Success_Delivery);
     if (GameManager.instance.NUM_Success_Delivery > 3) {
 
       return true;
@@ -642,7 +641,7 @@ public class Individual : MonoBehaviour
   public void SetSelectWhomSelection (Individual ind)
   {
     AttackWhom = ind;
-    Debug.Log ("AttackWhom = " + AttackWhom);
+    //Debug.Log ("AttackWhom = " + AttackWhom);
     SwapWhom = ind;
     ind.TurnOffMyReticle ();
   }
@@ -693,7 +692,7 @@ public class Individual : MonoBehaviour
   //reaction to get shot
   public void GetShot ()
   {
-    Debug.Log (Index + " Got shot");
+    //Debug.Log (Index + " Got shot");
     bool bulletProof = false;
     foreach (Mask msk in myMaskList) {
       if (msk.MyMaskType == MaskType.Defend) {
@@ -709,7 +708,7 @@ public class Individual : MonoBehaviour
   public void GetSwapped (Individual sender)
   {
     if (myMaskList.Count > 0) {
-      Debug.Log ("I got swapped at Bob's swap shop!");
+      //Debug.Log ("I got swapped at Bob's swap shop!");
     }
   }
 

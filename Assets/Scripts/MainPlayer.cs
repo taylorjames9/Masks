@@ -29,19 +29,17 @@ public class MainPlayer : Individual {
   }
 
   public void Start(){
-    Debug.Log ("It's MAIN PLAYER TURN");
+    //Debug.Log ("It's MAIN PLAYER TURN");
     SetGUI_Interactable ();
   }
 
   public IEnumerator OnMainPlayerTurn (int turnPos)
   {
-    Debug.Log ("It's MAIN PLAYER TURN");
-   
     SetGUI_Interactable ();
-    Debug.Log ("MainPlayer turn is running");
+    //Debug.Log ("MainPlayer turn is running");
     transform.FindChild ("thoughtbubble").gameObject.SetActive (true);
     OnMainPlayerDecisionPhase_01 ();
-    Debug.Log ("after onDecision phase");
+    //Debug.Log ("after onDecision phase");
     yield return 0;
 
   }
@@ -66,7 +64,7 @@ public class MainPlayer : Individual {
     //do nothing
     //this function needs to be here...but 
     if (turnPos == Index) {
-      Debug.Log ("MainPlayer OnMyTurn is running ");
+      //Debug.Log ("MainPlayer OnMyTurn is running ");
       MainCam_Day_Night.instance.SwitchDayNight("day");
       GameManager.instance.MyGameState = Game_State.Flipping;
       StartCoroutine(OnMainPlayerTurn (turnPos));
