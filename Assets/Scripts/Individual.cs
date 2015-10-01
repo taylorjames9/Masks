@@ -172,7 +172,7 @@ public class Individual : MonoBehaviour
   }
 
   //This check runs every time a mask is removed. 
-  //It displays the correct graphic, and sometimes ends the game if game end criteria are met.
+  //It displays the correct graphic, and sometimes ends the game if game end criteria met.
   public PlayerState CheckPlayerState ()
   {
     switch (myMaskList.Count) {
@@ -188,34 +188,21 @@ public class Individual : MonoBehaviour
         }
       }
       MyPlayerState = PlayerState.Bone;
-      //This for loop says: if player delivered to the wrong character, 
-      //and then skull is revealed, and it is incorrect recipient -> end game
-      foreach(Transform child in GetComponentsInChildren<RectTransform>()){
-        if(child.tag == "brf_ind"){
-          if(child.gameObject.activeSelf){
-            Debug.Log ("my briefcase indicator is active "+Index);
-             if(!IHaveMySpecialBriefcase){
-              Debug.Log ("THIS HIT TRUE. I DONT have my special Briefcase "+Index);
-              GameManager.instance.MyGameState = Game_State.GameOver;
-            }
-          }
-        }
-      }
+      CheckForIncorrectDelivery();
       break;
     case 1:
       MyPlayerState = PlayerState.AtTrueChar;
       if(GameManager.instance.MyGameState ==Game_State.Flipping){
         GameManager.instance.MyGameState = Game_State.Flipping;
-      } else {
-
-      }
+      } 
+      CheckForIncorrectDelivery();
       break;
     default:
       MyPlayerState = PlayerState.Alive;
       if(GameManager.instance.MyGameState ==Game_State.Flipping){
         GameManager.instance.MyGameState = Game_State.Flipping;
-      } else {
-      }
+      } 
+      CheckForIncorrectDelivery();
       break;
     }
     TurnOffMyReticle ();
@@ -235,6 +222,22 @@ public class Individual : MonoBehaviour
     return myNewMask.MyMaskType;
   }
 
+  public void CheckForIncorrectDelivery(){
+    //This for loop says: if player delivered to the wrong character, 
+    //and then skull is revealed, and it is incorrect recipient -> end game
+    foreach(Transform child in GetComponentsInChildren<RectTransform>()){
+      if(child.tag == "brf_ind"){
+        if(child.gameObject.activeSelf){
+          Debug.Log ("my briefcase indicator is active "+Index);
+          if(!IHaveMySpecialBriefcase){
+            Debug.Log ("THIS HIT TRUE. I DONT have my special Briefcase "+Index);
+            GameManager.instance.MyGameState = Game_State.GameOver;
+          }
+        }
+      }
+    }
+  }
+  
   //removes top mask and re-evaluates player state. 
   public void RemoveMask ()
   {
