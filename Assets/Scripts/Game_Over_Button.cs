@@ -12,6 +12,7 @@ public class Game_Over_Button : MonoBehaviour {
   }
 
   public void Restart_Win(){
+	//PlayerPrefs.SetInt ("money", PlayerPrefs.GetInt("money")+);
     Application.LoadLevel ("Main");
   }
 }

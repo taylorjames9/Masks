@@ -243,7 +243,7 @@ public class Individual : MonoBehaviour
     if (myMaskList.Count > 0) {
       if (GameManager.instance.MyGameState == Game_State.Flipping) {
         SoundManager.instance.PlaySingle (Swish);
-        PlayerPrefs.SetInt("money", PlayerPrefs.GetInt("money") + 10000);
+        PlayerPrefs.SetInt("money", PlayerPrefs.GetInt("money") + 1000);
         UI_Manager.instance.myMoneyText.text = "Money $"+PlayerPrefs.GetInt("money").ToString();
       }
       myMaskList [myMaskList.Count - 1].MaskAnimation ();
@@ -607,7 +607,7 @@ public class Individual : MonoBehaviour
 
       Debug.Log ("My name is : "+deliverTo.Index+" and I have my mask ");
       if(CheckIfEveryOneHasTheirSpecialBrief()){
-        PlayerPrefs.SetInt ("money", PlayerPrefs.GetInt ("money") + 400000);
+        PlayerPrefs.SetInt ("money", PlayerPrefs.GetInt ("money") + 40003);
         GameManager.instance.MyGameState = Game_State.Win;
         GameManager.instance.Win_GUI.SetActive(true);
       }
