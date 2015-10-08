@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 
   private int numPoints;
   private Vector3 centerPos = new Vector3(0,0,0);
-  private float radiusX = 2.5f, radiusY = 2.5f;
+  private float radiusX = 1.5f, radiusY = 1.5f;
   private bool isCircular = true;
   private bool vertical = true;
   private Vector3 pointPos;
@@ -111,7 +111,6 @@ public class GameManager : MonoBehaviour {
     int i = 0;
     foreach (Individual indie in groupOfPlayersList) {
       i++;
-      //Debug.Log ("ran through creation cycle");
       //multiply 'i' by '1.0f' to ensure the result is a fraction
       float pointNum = (i * 1.0f) / numPoints;
       //angle along the unit circle for placing points
@@ -127,7 +126,6 @@ public class GameManager : MonoBehaviour {
         pointPos = new Vector3 (x, 0, y) + centerPos;
       }
       //place the prefab at given position
-      //Instantiate (_proto_individual, pointPos, Quaternion.identity);
       indie.transform.position = pointPos;
     }
     //keeps radius on both axes the same if circular
@@ -139,7 +137,6 @@ public class GameManager : MonoBehaviour {
 
 
   private void DistributeMasksToGroup (){
-    //Debug.Log ("Distribute masks to group");
     int _masksToHandout = RandMaskNumInGame;
 		while (_masksToHandout > 0) {
 			foreach (Individual indie in groupOfPlayersList) {
@@ -154,14 +151,12 @@ public class GameManager : MonoBehaviour {
               indie.ApplyRandomMask ();
               _masksToHandout--;
             }
-//            Debug.Log ("masks to hand out = "+_masksToHandout);
           } else {
             continue;
           }
 				} 
 			}
 		}
-    //Debug.Log ("out of WHILE code");
     foreach (Individual ind in groupOfPlayersList) {
       ind.DisplayOnlyTopMask ();
     }
@@ -184,7 +179,6 @@ public class GameManager : MonoBehaviour {
       if(deathMarchList.Count > 0){
         foreach(Individual deadman in deathMarchList){
           groupOfPlayersList.Remove(deadman);
-		  //deadman.Index = -1;
         }
         deathMarchList.Clear();
       }

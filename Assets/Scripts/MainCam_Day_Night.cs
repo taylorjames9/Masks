@@ -10,8 +10,8 @@ public class MainCam_Day_Night : MonoBehaviour {
 	public Color DayTimeColor;
 	public Color NightTimeColor;
   private Camera myCam;
-  public Text dayNightLabel;
-  public Text dayNightRules;
+  //public Text dayNightLabel;
+  //public Text dayNightRules;
 
 	public static MainCam_Day_Night instance { get ; set;}
 	
@@ -33,12 +33,12 @@ public class MainCam_Day_Night : MonoBehaviour {
 	public void SwitchDayNight(string dayNight){
 		if (dayNight == "day") {
 			myCam.backgroundColor = DayTimeColor;
-      dayNightLabel.text = "Day";
-      dayNightRules.text = "During the Day Time you can act boldly. Click or tap on masks to remove them. Careful: if you remove a Senators last mask, you will lose the game.";
+      //dayNightLabel.text = "Day";
+      //dayNightRules.text = "During the Day Time you can act boldly. Click or tap on masks to remove them. Careful: if you remove a Senators last mask, you will lose the game.";
 		} else if(dayNight == "night") {
 			myCam.backgroundColor = NightTimeColor;
-      dayNightLabel.text = "Night";
-      dayNightRules.text = "During the night, Senators will use covert actions. Watch them carefully to understand which masks they have in their possession. (You go first when night falls.)";
+      //dayNightLabel.text = "Night";
+      //dayNightRules.text = "During the night, Senators will use covert actions. Watch them carefully to understand which masks they have in their possession. (You go first when night falls.)";
 		}
 
 	}

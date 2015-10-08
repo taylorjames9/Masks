@@ -363,7 +363,7 @@ public class Individual : MonoBehaviour
       MainPlayer.instance.AttackCapability = false;
       MainPlayer.instance.SwapCapability = false;
       UI_Manager.instance.attackButton.interactable = false;
-      UI_Manager.instance.attackButton.image.color = Color.red;
+      UI_Manager.instance.attackButton.image.color = new Color(0.6f, 0.0f, 0.0f, 0.4f);
       UI_Manager.instance.swapButton.interactable = false;
       UI_Manager.instance.swapButton.image.color = Color.red;
       MainPlayer.instance.MyBriefCaseSelect = null;
@@ -602,7 +602,6 @@ public class Individual : MonoBehaviour
   //this method signature means deliver
   public void PerformMyDecision (Briefcase brf, Individual deliverTo)
   {
-    //Debug.Log ("Deliver to is PERFOMRING a DECISION");
     brf.NoMas ();
     if ((brf.myBriefCaseType == Briefcase_Type.YELLOW && deliverTo.I_AM_YELLOW) || (brf.myBriefCaseType == Briefcase_Type.RED && deliverTo.I_AM_RED) ||  (brf.myBriefCaseType == Briefcase_Type.GREY && deliverTo.I_AM_GREY )) {
       deliverTo.IHaveMySpecialBriefcase = true;

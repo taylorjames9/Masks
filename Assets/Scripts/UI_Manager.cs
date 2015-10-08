@@ -57,9 +57,6 @@ public class UI_Manager : MonoBehaviour {
 
 
   public void UpdateMaskGUIForPlayer(){
-   
-    //List<Mask> oldImages = GameObject.FindGameObjectWithTag ("MaskGUIArea").GetComponentsInChildren<Mask> ().ToList();
-
     if (GameObject.FindGameObjectWithTag ("MaskGUIArea").transform.childCount > 0) {
       List<Mask> oldImages = GameObject.FindGameObjectWithTag ("MaskGUIArea").GetComponentsInChildren<Mask> ().ToList();
       foreach (Mask child in oldImages) {
@@ -109,7 +106,7 @@ public class UI_Manager : MonoBehaviour {
   }
 
   public void UpdateMaskNumberGUI( ){
-    masksInGame.text = "Masks Remaining: " + GameManager.instance.RandMaskNumInGame;
+    masksInGame.text = "Masks " + GameManager.instance.RandMaskNumInGame;
   }
 
   public void UpdateTurnPositionGUI(int turnPos){
@@ -124,10 +121,10 @@ public class UI_Manager : MonoBehaviour {
     UpdateTurnPositionGUI (GameManager.instance.TurnPosition);
     CloneOfMainPlayerMasks = new List<Mask> ();
     attackButton.interactable = false;
-    attackButton.image.color = Color.red;
+    attackButton.image.color = new Color(0.9f, 0.6f, 0.6f, 0.4f);
     swapButton.interactable = false;
     swapButton.image.color = Color.red;
-    myMoneyText.text = "Money $" + PlayerPrefs.GetInt ("money").ToString ();
+    myMoneyText.text = "$ " + PlayerPrefs.GetInt ("money").ToString ();
 	}
 	
 	// Update is called once per frame
