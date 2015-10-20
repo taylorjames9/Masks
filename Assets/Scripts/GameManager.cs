@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
   public int NUM_Success_Delivery{get{ return num_Success_Delivery; } set{num_Success_Delivery = value;}}
 
   private int numPoints;
-  private Vector3 centerPos = new Vector3(0,0,0);
+  private Vector3 centerPos = new Vector3(0,-70,0);
   private float radiusX = 1.5f, radiusY = 1.5f;
   private bool isCircular = true;
   private bool vertical = true;
@@ -114,10 +114,11 @@ public class GameManager : MonoBehaviour {
       //multiply 'i' by '1.0f' to ensure the result is a fraction
       float pointNum = (i * 1.0f) / numPoints;
       //angle along the unit circle for placing points
-      float angle = pointNum * Mathf.PI * 1.79f;
+      float angle = pointNum * Mathf.PI * 1.76f;
 
-      float x = Mathf.Sin (angle) * radiusX;
-      float y = Mathf.Cos (angle) * radiusY;
+      float x = Mathf.Sin (angle) * radiusX *100;
+      float y = Mathf.Cos (angle) * radiusY *100;
+      float z = 2.0f;
 
       //position for point prefab
       if (vertical)
@@ -126,7 +127,8 @@ public class GameManager : MonoBehaviour {
         pointPos = new Vector3 (x, 0, y) + centerPos;
       }
       //place the prefab at given position
-      indie.transform.position = pointPos;
+      /////////////indie.transform.position = pointPos;
+      indie.GetComponent<RectTransform>().localPosition = pointPos;
     }
     //keeps radius on both axes the same if circular
     if (isCircular) {

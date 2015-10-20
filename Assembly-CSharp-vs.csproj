@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\Mask.cs" />
      <Compile Include="Assets\Scripts\Slider_Changer.cs" />
      <Compile Include="Assets\Scripts\SoundManager.cs" />
+     <Compile Include="Assets\Scripts\Tutorial_Script.cs" />
      <Compile Include="Assets\Scripts\UI_Manager.cs" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>

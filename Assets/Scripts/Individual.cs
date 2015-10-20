@@ -216,7 +216,7 @@ public class Individual : MonoBehaviour
     myNewMask.InitializeRandomMask ();
     myMaskList.Add (myNewMask);
     myNewMask.transform.SetParent (transform);
-    myNewMask.transform.position = new Vector2 (transform.position.x, transform.position.y);
+    myNewMask.transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
     myNewMask.ChangeAlphaColor (0);
     myNewMask.MyOwner = this;
     return myNewMask.MyMaskType;
@@ -247,7 +247,7 @@ public class Individual : MonoBehaviour
       if (GameManager.instance.MyGameState == Game_State.Flipping) {
         SoundManager.instance.PlaySingle (Swish);
         PlayerPrefs.SetInt("money", PlayerPrefs.GetInt("money") + 1000);
-        UI_Manager.instance.myMoneyText.text = "Money $"+PlayerPrefs.GetInt("money").ToString();
+        UI_Manager.instance.myMoneyText.text = "$"+PlayerPrefs.GetInt("money").ToString();
       }
       myMaskList [myMaskList.Count - 1].MaskAnimation ();
       myMaskList.RemoveAt (myMaskList.Count - 1);

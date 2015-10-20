@@ -23,6 +23,6 @@ public class Slider_Changer : MonoBehaviour {
     //(These can not be adjusted individually, but they can be if necessary)
     Individual.speedSlider = spd;
     PlayerPrefs.SetFloat ("speed", spd);
-    duration_report.text = "Duration of NPC Turn " + (spd*5.0f).ToString ("F2")+" (seconds)";
+    duration_report.text = "NPC Turn Speed" + (spd*5.0f).ToString ("F2")+" (seconds)";
   }
 }

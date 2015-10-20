@@ -60,7 +60,6 @@ public class UI_Manager : MonoBehaviour {
     if (GameObject.FindGameObjectWithTag ("MaskGUIArea").transform.childCount > 0) {
       List<Mask> oldImages = GameObject.FindGameObjectWithTag ("MaskGUIArea").GetComponentsInChildren<Mask> ().ToList();
       foreach (Mask child in oldImages) {
-//        Debug.Log ("Child name "+child.name);
         Destroy(child.gameObject);
       }
     }
@@ -74,9 +73,9 @@ public class UI_Manager : MonoBehaviour {
       GameObject guiMask = Instantiate(protoGUiMask) as GameObject; 
       guiMask.GetComponent<Mask>().gui_Mask_INDEX = count;
       count--;
-      ////////Debug.Log ("gui Count Indexing: "+count);
       guiMask.transform.SetParent(GameObject.FindGameObjectWithTag("MaskGUIArea").transform);
-      guiMask.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
+      guiMask.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+      guiMask.GetComponent<RectTransform>().localPosition = new Vector3(transform.parent.GetComponent<RectTransform>().localPosition.x, transform.parent.GetComponent<RectTransform>().localPosition.y, transform.parent.GetComponent<RectTransform>().localPosition.z);
       guiMask.GetComponent<Mask>().MaskInGui = true;
       switch(msk.MyMaskType){
       case MaskType.Attack:
@@ -89,11 +88,9 @@ public class UI_Manager : MonoBehaviour {
         guiMask.GetComponent<Image>().sprite = switchSprite;
         break;
       default:
-        //Debug.Log ("UiManager can not find that mask tyep");
         break;
       }
     }
-    //CloneOfMainPlayerMasks.Reverse ();
   }
 
   public List<Mask> ReturnMainPlayerGUIMaskClone(List<Mask> msks){
@@ -116,7 +113,6 @@ public class UI_Manager : MonoBehaviour {
   
 	// Use this for initialization
 	void Start () {
-    //PlayerPrefs.SetInt("money", 2000);
     UpdateMaskNumberGUI ();
     UpdateTurnPositionGUI (GameManager.instance.TurnPosition);
     CloneOfMainPlayerMasks = new List<Mask> ();
