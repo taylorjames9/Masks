@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 
   private int numPoints;
   private Vector3 centerPos = new Vector3(0,-70,0);
-  private float radiusX = 1.5f, radiusY = 1.5f;
+  private float radiusX = 2.0f, radiusY = 2.0f;
   private bool isCircular = true;
   private bool vertical = true;
   private Vector3 pointPos;
