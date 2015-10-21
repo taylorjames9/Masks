@@ -7,30 +7,22 @@ public class Tutorial_Script : MonoBehaviour {
 
 
 
-	public List<string> myTutorialTextSnippets = new List<string>();
-	public Text tutTextDisplayArea;
+	public List<Sprite> myTutorialTextSnippets = new List<Sprite>();
+	public Image tutTextDisplayArea;
+	public Text tutSlideCounter;
 
 	void Awake(){
-		//add all strings with tutorial to list
-    myTutorialTextSnippets.Add ("This is the first tutorial tile. This is the first tutorial tile. This is the first tutorial tile. This is the first tutorial tile. This is the first tutorial tile. This is the first tutorial tile. This is the first tutorial tile. This is the first tutorial tile. This is the first tutorial tile. This is the first tutorial tile. ");
-    myTutorialTextSnippets.Add ("This is the Second tutorial tile.");
-    myTutorialTextSnippets.Add ("This is the third tutorial tile.");
-    myTutorialTextSnippets.Add ("This is the fourth tutorial tile.");
-    myTutorialTextSnippets.Add ("This is the fifth tutorial tile.");
-    myTutorialTextSnippets.Add ("This is the sixth tutorial tile.");
-    myTutorialTextSnippets.Add ("This is the seventh tutorial tile.");
-    myTutorialTextSnippets.Add ("This is the eigth tutorial tile.");
-    myTutorialTextSnippets.Add ("This is the ninth tutorial tile.");
+
 
 	}
 
   void Start(){
-    tutTextDisplayArea.text = myTutorialTextSnippets [0];
+    tutTextDisplayArea.sprite = myTutorialTextSnippets [0];
   }
 
 	public void FlipOneThroughTutorial(string dir){
     Debug.Log ("Flipping Through");
-    int i = myTutorialTextSnippets.IndexOf (tutTextDisplayArea.text);
+    int i = myTutorialTextSnippets.IndexOf (tutTextDisplayArea.sprite);
     if (dir == "next") {
       if(i < myTutorialTextSnippets.Count -1){
         Debug.Log ("NEXT WE GO");
@@ -46,7 +38,8 @@ public class Tutorial_Script : MonoBehaviour {
         i = myTutorialTextSnippets.Count -1;
       }
     }
-    tutTextDisplayArea.text = myTutorialTextSnippets [i];
+	tutSlideCounter.text = (i + 1).ToString () + "/" + myTutorialTextSnippets.Count.ToString ();
+    tutTextDisplayArea.sprite = myTutorialTextSnippets [i];
   }
 
 
